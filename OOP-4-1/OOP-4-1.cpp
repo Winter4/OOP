@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <time.h>
 
+// __________________________ VECTOR _____________________________-
+
 template <class Type>
 class Vector {
 private:
@@ -40,7 +42,7 @@ public:
 	}
 
 	void SetSize(int sizeToSet) {
-		if (sizeToSet >= 0) size = sizeToSet;
+		if (sizeToSet > 0 && sizeToSet <= 100) size = sizeToSet;
 		else throw -1;
 
 		if (items != nullptr) delete[] items;
@@ -62,7 +64,7 @@ public:
 			items[i] = (size * 2) * rand() / RAND_MAX - size;
 	}
 
-	Type operator[] (int i)
+	Type& operator[] (int i)
 	{
 		if (i >= 0 && i < size) return items[i];
 		else throw -1;
@@ -75,6 +77,8 @@ public:
 template <class Type>
 std::ostream& operator << (std::ostream& out, const Vector<Type>& vector)
 {
+	std::cout.width(5);
+	std::cout.precision(2);
 	for (int i = 0; i < vector.size; i++)
 		std::cout << vector.items[i] << "\t";
 	std::cout << std::endl;
@@ -97,7 +101,7 @@ public:
 	}
 
 	Matrix(int rowsToSet, int columnsToSet) {
-		if (rowsToSet < 1 || columnsToSet < 1) throw -1;
+		if (rowsToSet < 1 || rowsToSet > 100 || columnsToSet < 1 || columnsToSet > 100) throw -1;
 
 		rows = rowsToSet;
 		columns = columnsToSet;
@@ -122,12 +126,19 @@ public:
 	}
 
 	Matrix(int rowsToSet, int columnsToSet, float a, float b, float c) {
-		Matrix(rowsToSet, columnsToSet);
+		//Matrix(rowsToSet, columnsToSet);
+		if (rowsToSet < 1 || rowsToSet > 100 || columnsToSet < 1 || columnsToSet > 100) throw - 1;
+
+		rows = rowsToSet;
+		columns = columnsToSet;
+
+		vectors = new Vector<Type>[rows];
 		
-		for (int i = 0; i < rows; i++)
+		for (int i = 0; i < rows; i++) {
+			vectors[i].SetSize(columns);
 			for (int j = 0; j < columns; j++)
 				this->vectors[i][j] = a * (float(i + 1) + b) * powf(sinf(float(j + 1) + c), 2);
-				
+		}
 	}
 
 	size_t GetColumns() {
@@ -149,8 +160,6 @@ public:
 		for (int i = 0; i < rows; i++)
 			vectors[i].RandomVector();
 	}
-
-	
 
 	float CalculateP() {
 		float max;
@@ -203,7 +212,7 @@ public:
 
 		Vector<Type> result(rows);
 		for (int i = 0; i < rows; i++)
-			(result[i] = vectors[i][j_min];
+			result[i] = vectors[i][j_min];
 
 		return result;
 	}
@@ -219,24 +228,44 @@ public:
 template <class Type>
 std::ostream& operator << (std::ostream& out, const Matrix<Type>& matrix)
 {
-	for (int i = 0; i < matrix.rows; i++)
+	for (int i = 0; i < matrix.rows; i++) 
 		std::cout << matrix.vectors[i];
+	
+	std::cout << std::endl;
 	return out;
 }
 
+// __________________________________________________________________________________
 
 int main()
 {
 	srand(time(0));
-	Matrix<float> A(5,4, 1.2, -2.1, 3.5);
-	std::cout << A;
-	Matrix<float> B(6, 5, 5.9, -5.1, -4.2);
-	std::cout << B;
 
-	if (A.CalculateP() > 0) A.Transform(A.ArithmeticAverage());
+	Matrix<float> A(5,4, 1.2, -2.1, 3.5);
+	std::cout << "Matrix A: \n";
+	std::cout << A;
+	
+	if (A.CalculateP() > 0) {
+		std::cout << "Parameter > 0. The matrix A was transformed. \n";
+		A.Transform(A.ArithmeticAverage());
+		std::cout << A;
+	}
 	Vector<float> A_vector = A.GetVector();
 	std::cout << A_vector;
 	
+
+	Matrix<float> B(6, 5, 5.9, -5.1, -4.2);
+	std::cout << "\nMatrix B: \n";
+	std::cout << B;
+
+	if (B.CalculateP() > 0) {
+		std::cout << "Parameter > 0. The matrix B was transformed. \n";
+		B.Transform(B.ArithmeticAverage());
+		std::cout << B;
+	}
+	Vector<float> B_vector = B.GetVector();
+	std::cout << B_vector;
+
 
 	system("pause");
 	return 0;
