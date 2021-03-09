@@ -11,7 +11,6 @@ private:
 
 public:
 	Vector() {
-		items = nullptr;
 		size = 0;
 	}
 
@@ -42,10 +41,11 @@ public:
 	}
 
 	void SetSize(int sizeToSet) {
+		if (size > 0) delete[] items;
+
 		if (sizeToSet > 0 && sizeToSet <= 100) size = sizeToSet;
 		else throw -1;
 
-		if (items != nullptr) delete[] items;
 		items = new Type[size];
 
 		for (int i = 0; i < size; i++)
@@ -75,12 +75,12 @@ public:
 };
 
 template <class Type>
-std::ostream& operator << (std::ostream& out, const Vector<Type>& vector)
+std::ostream& operator << (std::ostream& out, Vector<Type>& vector)
 {
 	std::cout.width(5);
 	std::cout.precision(2);
-	for (int i = 0; i < vector.size; i++)
-		std::cout << vector.items[i] << "\t";
+	for (int i = 0; i < vector.GetSize(); i++)
+		std::cout << vector[i] << "\t";
 	std::cout << std::endl;
 	return out;
 }
@@ -161,19 +161,17 @@ public:
 			vectors[i].RandomVector();
 	}
 
-	float CalculateP() {
-		float max;
-		int i_max;
-		for (int i = 0; i < rows; i++) {
-			max = INT_MIN;
+	Type CalculateP() {
+		float max = INT_MIN;
+		int i_max = -1;
+		for (int i = 0; i < rows; i++) 
 			for (int j = 0; j < columns; j++)
 				if (vectors[i][j] > max) {
 					max = vectors[i][j];
 					i_max = i;
 				}
-		}
 
-		float P = 1;
+		Type P = 1;
 		for (int j = 0; j < columns; j++)
 			if (vectors[i_max][j] != 0) P *= vectors[i_max][j];
 
@@ -181,15 +179,16 @@ public:
 	}
 
 	float ArithmeticAverage() {
-		float average = 0;
+		Type average = 0;
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < columns; j++)
 				average += vectors[i][j];
 
-		return average / (rows * columns);
+		return float(average / (rows * columns));
 	}
 
-	void Transform(float average) {
+	void Transform() {
+		float average = ArithmeticAverage();
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < columns; j++)
 				vectors[i][j] -= average;
@@ -226,10 +225,14 @@ public:
 };
 
 template <class Type>
-std::ostream& operator << (std::ostream& out, const Matrix<Type>& matrix)
+std::ostream& operator << (std::ostream& out, Matrix<Type>& matrix)
 {
-	for (int i = 0; i < matrix.rows; i++) 
-		std::cout << matrix.vectors[i];
+	std::cout.precision(2);
+	for (int i = 0; i < matrix.GetRows(); i++) {
+		for (int j = 0; j < matrix.GetColumns(); j++)
+			std::cout << matrix[i][j] << "\t";
+		std::cout << std::endl;
+	}
 	
 	std::cout << std::endl;
 	return out;
@@ -247,7 +250,7 @@ int main()
 	
 	if (A.CalculateP() > 0) {
 		std::cout << "Parameter > 0. The matrix A was transformed. \n";
-		A.Transform(A.ArithmeticAverage());
+		A.Transform();
 		std::cout << A;
 	}
 	Vector<float> A_vector = A.GetVector();
@@ -260,7 +263,7 @@ int main()
 
 	if (B.CalculateP() > 0) {
 		std::cout << "Parameter > 0. The matrix B was transformed. \n";
-		B.Transform(B.ArithmeticAverage());
+		B.Transform();
 		std::cout << B;
 	}
 	Vector<float> B_vector = B.GetVector();
