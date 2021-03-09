@@ -244,6 +244,8 @@ int main()
 {
 	srand(time(0));
 
+	// ___________________ A ___________________
+
 	Matrix<float> A(5,4, 1.2, -2.1, 3.5);
 	std::cout << "Matrix A: \n";
 	std::cout << A;
@@ -256,6 +258,7 @@ int main()
 	Vector<float> A_vector = A.GetVector();
 	std::cout << A_vector;
 	
+	// ___________________ B _____________________
 
 	Matrix<float> B(6, 5, 5.9, -5.1, -4.2);
 	std::cout << "\nMatrix B: \n";
@@ -269,6 +272,33 @@ int main()
 	Vector<float> B_vector = B.GetVector();
 	std::cout << B_vector;
 
+	// ___________________ C _______________________
+
+	Matrix<char> C(2, 2);
+	C.EnterMatrixByKeyboard();
+	std::cout << "Matrix C: \n" << C;
+
+	if (C.CalculateP() > 0) {
+		std::cout << "Parameter > 0. The matrix B was transformed. \n";
+		C.Transform();
+		std::cout << C;
+	}
+	Vector<char> C_vector = C.GetVector();
+	std::cout << C_vector;
+
+	// ___________________ D _________________________
+
+	Matrix<int> D(3, 4);
+	D.RandomMatrix();
+	std::cout << "Matrix D: \n" << D;
+
+	if (D.CalculateP() > 0) {
+		std::cout << "Parameter > 0. The matrix B was transformed. \n";
+		D.Transform();
+		std::cout << D;
+	}
+	Vector<int> D_vector = D.GetVector();
+	std::cout << D_vector;
 
 	system("pause");
 	return 0;
