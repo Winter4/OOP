@@ -16,13 +16,22 @@ unsigned List::getCount()
 	return count;
 }
 
-void List::addHead(Car data)
+void List::addHead(Car car)
 {
+	// если в списке уже есть эта машина
+	Node* toChange = head;
+	for (size_t i = 0; i < count; i++) 
+		if (toChange->data.serialNumber == car.serialNumber) {
+			toChange->data.mileage = car.mileage;
+			return;
+		}
+	
+	// если такой машины нету, создаем новую ячейку	
 	Node* newItem = new Node;
 
 	newItem->prev = nullptr;
 	newItem->next = head;
-	newItem->data = data;
+	newItem->data = car;
 
 	if (head != nullptr)
 		head->prev = newItem;
@@ -35,13 +44,21 @@ void List::addHead(Car data)
 	count++;
 }
 
-void List::addTail(Car data)
+void List::addTail(Car car)
 {
+	// если в списке уже есть эта машина
+	Node* toChange = head;
+	for (size_t i = 0; i < count; i++)
+		if (toChange->data.serialNumber == car.serialNumber) {
+			toChange->data.mileage = car.mileage;
+			return;
+		}
+
 	Node* newItem = new Node;
 
 	newItem->prev = tail;;
 	newItem->next = nullptr;
-	newItem->data = data;
+	newItem->data = car;
 
 	if (tail != nullptr)
 		tail->next = newItem;
@@ -54,16 +71,50 @@ void List::addTail(Car data)
 	count++;
 }
 
-void List::insertItem(Car data, unsigned position)
+void List::insertItem(Car car, unsigned position)
 {
+	// если в списке уже есть эта машина
+	Node* toChange = head;
+	for (size_t i = 0; i < count; i++)
+		if (toChange->data.serialNumber == car.serialNumber) {
+			toChange->data.mileage = car.mileage;
+			return;
+		}
+
+	// проверка на диапазон
 	if (position == 0 || position > count + 1) {
 		std::cout << "Wrong number to insert. \n";
 		return;
 	}
-
+	
+	// если в конец списка
 	if (position == count + 1) {
-
+		addTail(car);
+		return;
 	}
+	else
+		// если в начало списка
+		if (position == 1) {
+			addHead(car);
+			return;
+		}
+
+	// если не в начало и не в конец 
+	Node* toInsert = head;
+	for (size_t i = 1; i < position; i++) 
+		toInsert = toInsert->next;
+	
+	Node* newItem = new Node;
+	Node* newItemPrev = toInsert->prev;
+
+	newItemPrev->next = newItem;
+	toInsert->prev = newItem;
+
+	newItem->prev = newItemPrev;
+	newItem->next = toInsert;
+	newItem->data = car;
+
+	count++;
 }
 
 void List::deleteItem(unsigned position)
@@ -94,3 +145,63 @@ void List::deleteItem(unsigned position)
 	delete toDelete;
 	count--;
 }
+
+void List::clearList()
+{
+	Node* tmp;
+	for (; count != 0; count--) {
+		tmp = head->next;
+		delete head;
+		head = tmp;
+	}
+}
+
+void List::printItem(unsigned position)
+{
+	if (!(position > 0 && position <= count)) {
+		std::cout << "Wrong print position. \n";
+		return;
+	}
+
+	Node* toPrint = head;
+	for (size_t i = 1; i < position; i++) 
+		toPrint = toPrint->next;
+	
+	std::cout << "Model: " << toPrint->data.model << std::endl;
+	std::cout << "Serial number: " << toPrint->data.serialNumber << std::endl;
+	std::cout << "Mileage: " << toPrint->data.mileage << std::endl;
+	std::cout << "Production year: " << toPrint->data.productionYear << std::endl;
+	std::cout << std::endl;
+}
+
+void List::printList()
+{
+	//Node* toPrint = head;
+	for (size_t i = 1; i <= count; i++) {
+		/*
+		std::cout << "Model: " << toPrint->data.model << std::endl;
+		std::cout << "Serial number: " << toPrint->data.serialNumber << std::endl;
+		std::cout << "Mileage: " << toPrint->data.mileage << std::endl;
+		std::cout << "Production year: " << toPrint->data.productionYear << std::endl;
+		*/
+		printItem(i);
+		//toPrint = toPrint->next;
+	}
+}
+
+Car List::operator[] (unsigned position)
+{
+	
+	Node* toReturn = head;
+	for (size_t i = 1; i < position; i++) {
+		toReturn = toReturn->next;
+	}
+
+	return toReturn->data;
+}
+
+List List::mileageTask()
+{
+
+}
+

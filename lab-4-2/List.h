@@ -19,7 +19,7 @@ class List {
 private:
 	Node* head;
 	Node* tail;
-	unsigned count;
+	size_t count;
 
 public:
 	List();
@@ -33,10 +33,14 @@ public:
 
 	void deleteItem(unsigned);
 	void clearList(); 
-
-	void printList();
+	
 	void printItem(unsigned);
+	void printList();
 
+	// position [1; N]
 	Car operator[] (unsigned);
+
+	List mileageTask();
+	List newestCars();
 };
 
