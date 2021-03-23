@@ -1,9 +1,32 @@
 #include "List.h"
 
+void List::swap(Node* first, Node* second)
+{
+	Car tmp = first->data;
+	first->data = second->data;
+	second->data = tmp;
+}
+
 List::List()
 {
 	head = tail = nullptr;
 	count = 0;
+}
+
+List::List(std::vector<Car> cars)
+{
+	for (Car car: cars)
+		addHead(car);
+}
+
+List::List(const List& listToCopy)
+{
+	head = tail = nullptr;
+	count = 0;
+
+	Node* copy = listToCopy.head;
+	for (; copy != nullptr; copy = copy->next)
+		addTail(copy->data);
 }
 
 List::~List()
@@ -11,7 +34,7 @@ List::~List()
 	clearList();
 }
 
-unsigned List::getCount()
+unsigned List::size()
 {
 	return count;
 }
@@ -200,8 +223,15 @@ Car List::operator[] (unsigned position)
 	return toReturn->data;
 }
 
-List List::mileageTask()
+void List::sort()
 {
-
+	bool flag = true;
+	while (flag) {
+		flag = false;
+		for (Node* tmp = head; tmp->next != nullptr; tmp = tmp->next)
+			if (tmp->data.productionYear > tmp->next->data.productionYear) {
+				swap(tmp, tmp->next);
+				flag = true;
+			}
+	}
 }
-

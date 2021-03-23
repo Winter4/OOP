@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <vector>
 
 struct Car {
 	std::string model;
@@ -16,16 +17,21 @@ struct Node {
 };
 
 class List {
-private:
+protected:
 	Node* head;
 	Node* tail;
 	size_t count;
 
+	// поменять местами 2 узла
+	void swap(Node*, Node*);
+
 public:
 	List();
+	List(std::vector<Car>);
+	List(const List&);
 	~List();
 
-	unsigned getCount();
+	unsigned size();
 
 	void addHead(Car);
 	void addTail(Car);
@@ -40,7 +46,7 @@ public:
 	// position [1; N]
 	Car operator[] (unsigned);
 
-	List mileageTask();
-	List newestCars();
+	// отсортировать по году выпуска
+	void sort();
 };
 
