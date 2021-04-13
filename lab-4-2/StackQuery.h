@@ -5,6 +5,6 @@ class StackQuery:public Stack {
 public:
 	StackQuery();
 	StackQuery(Stack&);
-	Stack newestCarsQuer(unsigned);
-	Stack mileageQuer(float);
+	Stack& newestCarsQuer(unsigned);
+	Stack& mileageQuer(float);
 };

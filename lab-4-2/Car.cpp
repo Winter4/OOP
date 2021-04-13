@@ -32,7 +32,7 @@ void Car::setSerialNumber(unsigned serialNumberToSet)
     else throw std::out_of_range("Serial number should be > 0");
 }
 
-void Car::setMileage(float mileageToSet)
+void Car::setMileage(unsigned mileageToSet)
 {
     if (mileageToSet > 0) mileage = mileageToSet;
     else throw std::out_of_range("Mileage should be > 0");
@@ -48,16 +48,18 @@ std::string Car::getModel() { return model; }
 
 unsigned Car::getSerialNumber() { return serialNumber; }
 
-float Car::getMileage() { return mileage; }
+unsigned Car::getMileage() { return mileage; }
 
 unsigned Car::getProductionYear() { return productionYear; }
 
 
 void Car::print()
 {
-    std::cout << "Model: " << model << std::endl;
-    std::cout << "Serial number: " << serialNumber << std::endl;
-    std::cout << "Mileage: " << mileage << std::endl;
-    std::cout << "Production year: " << productionYear << std::endl;
-    std::cout << std::endl;
+    std::cout.width(20);
+    std::cout << model << "\t   "; 
+    
+    std::cout << serialNumber << "\t" <<
+        mileage << "\t" << "  " <<
+        productionYear;
+    std::cout << std::endl; 
 }

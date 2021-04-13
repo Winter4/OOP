@@ -47,22 +47,23 @@ Stack::Stack()
 
 Stack::Stack(Stack& stackToCopy)
 {
-    std::cout << "ONE\n";
     Stack* saveSource = new Stack;
-    //StackNode* tmp;
-    std::cout << "TWO\n";
+    Car* tmp1;
+    Car* tmp2;
     while (stackToCopy.head != nullptr) {
-        std::cout << "1\n";
-        saveSource->push(stackToCopy.peek());
-        std::cout << "2\n";
-        push(stackToCopy.pop());
-        std::cout << "3\n";
+        //std::cout << "1\n";
+        tmp1 = new Car(stackToCopy.pop());
+        //std::cout << "1.1\n";
+        tmp2 = new Car(*tmp1);
+        //std::cout << "2\n";
+        push(*tmp1);
+        saveSource->push(*tmp2);
+        //std::cout << "3\n";
     }
-    std::cout << "THREE\n";
     reverse();
 
-    stackToCopy.head = saveSource->head;
-    stackToCopy.reverse();
+    saveSource->reverse();
+    stackToCopy.head = saveSource->getHeadPointer();
 }
 
 
@@ -102,26 +103,17 @@ Stack::Stack(Stack& stackToCopy)
         }
     }
 
-    Car& Stack::peek()
-    {
-        if (head == nullptr)
-            throw std::exception("Trying to pop an empty stack.");
-        else {
-            Car* car = new Car(*head->data);
-            return *car;
-        }
-    }
-
     // вывести стек
     void Stack::print()
     {
-        Stack tmp;
+        Stack* tmp = new Stack;
 
+        std::cout << "\t     Name\t   Serial\tMileage\t  Year" << std::endl;
         while (head != nullptr) {
             head->data->print();
-            tmp.push(pop());
+            tmp->push(pop());
         }
-        head = tmp.getHeadPointer();
+        head = tmp->getHeadPointer();
     }
 
     // получить указатель на верхний элемент
@@ -150,5 +142,5 @@ Stack::Stack(Stack& stackToCopy)
             result->push(newestCar());
 
         head = result->getHeadPointer();
-        reverse();
+     
     }

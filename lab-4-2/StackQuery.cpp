@@ -3,18 +3,12 @@
 StackQuery::StackQuery() {}
 
 StackQuery::StackQuery(Stack& object) {
-    Stack* saveSource = new Stack(object);
-    std::cout << " IN1\n";
-    while (object.getHeadPointer() != nullptr) 
-        this->push(object.pop());
-    reverse();
-
-    while (saveSource->getHeadPointer() != nullptr)
-        object.push(saveSource->pop());
+    Stack* newStack = new Stack(object);
+    this->head = newStack->getHeadPointer();
 }
 
 // 5 самых новых машин
-Stack StackQuery::newestCarsQuer(unsigned number = 5) {
+Stack& StackQuery::newestCarsQuer(unsigned number = 5) {
     if (number < 0) throw std::out_of_range("Cars number should be >= 0");
 
     Car* tmpCar;
@@ -32,7 +26,7 @@ Stack StackQuery::newestCarsQuer(unsigned number = 5) {
 }
 
 // машины с пробегом > 1e5
-Stack StackQuery::mileageQuer(float querValue = 100000)
+Stack& StackQuery::mileageQuer(float querValue = 100000)
 {
     Car* tmpCar;
     Stack* source = new Stack(*this);
@@ -45,5 +39,7 @@ Stack StackQuery::mileageQuer(float querValue = 100000)
     }
 
     this->head = source->getHeadPointer();
+    result->productionYearSort();
+    
     return *result;
 }

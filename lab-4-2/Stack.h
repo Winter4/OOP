@@ -1,5 +1,6 @@
 #pragma once
 #include "StackNode.h"
+#include <iostream>
 
 class Stack {
 protected:
@@ -15,7 +16,6 @@ public:
 
 	void push(Car&);
 	Car& pop();
-	Car& peek();
 	void print();
 	StackNode* getHeadPointer();
 	void reverse();

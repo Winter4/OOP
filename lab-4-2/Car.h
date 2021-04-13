@@ -6,7 +6,7 @@ class Car {
 private:
 	std::string model;
 	unsigned serialNumber;
-	float mileage;
+	unsigned mileage;
 	unsigned productionYear;
 
 public:
@@ -16,12 +16,12 @@ public:
 
 	void setModel(std::string modelToSet);
 	void setSerialNumber(unsigned);
-	void setMileage(float);
+	void setMileage(unsigned);
 	void setProductionYear(unsigned);
 
 	std::string getModel();
 	unsigned getSerialNumber();
-	float getMileage();
+	unsigned getMileage();
 	unsigned getProductionYear();
 
 	void print();
