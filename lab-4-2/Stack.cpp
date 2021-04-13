@@ -47,12 +47,18 @@ Stack::Stack()
 
 Stack::Stack(Stack& stackToCopy)
 {
+    std::cout << "ONE\n";
     Stack* saveSource = new Stack;
-    Car* tmpCar;
+    //StackNode* tmp;
+    std::cout << "TWO\n";
     while (stackToCopy.head != nullptr) {
+        std::cout << "1\n";
         saveSource->push(stackToCopy.peek());
-        this->push(stackToCopy.pop());
+        std::cout << "2\n";
+        push(stackToCopy.pop());
+        std::cout << "3\n";
     }
+    std::cout << "THREE\n";
     reverse();
 
     stackToCopy.head = saveSource->head;
@@ -98,8 +104,12 @@ Stack::Stack(Stack& stackToCopy)
 
     Car& Stack::peek()
     {
-        Car* tmp = new Car(*head->data);
-        return *tmp;
+        if (head == nullptr)
+            throw std::exception("Trying to pop an empty stack.");
+        else {
+            Car* car = new Car(*head->data);
+            return *car;
+        }
     }
 
     // вывести стек

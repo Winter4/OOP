@@ -24,8 +24,9 @@ int main()
     std::cout << " Service: \n";
     stack.productionYearSort();
     stack.print();
-
+    std::cout << " BEFORE\n";
     StackQuery stackQuery(stack);
+    std::cout << " AFTER\n\n";
 
     std::cout << "\n\n Newest cars: \n";
     stackQuery.newestCarsQuer(5).print();

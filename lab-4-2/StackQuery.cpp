@@ -3,8 +3,8 @@
 StackQuery::StackQuery() {}
 
 StackQuery::StackQuery(Stack& object) {
-    Stack* saveSource= new Stack(object);
-
+    Stack* saveSource = new Stack(object);
+    std::cout << " IN1\n";
     while (object.getHeadPointer() != nullptr) 
         this->push(object.pop());
     reverse();
