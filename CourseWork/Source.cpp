@@ -1,10 +1,7 @@
-#include <SFML/Graphics.hpp>
-#include "App.h"
-
-
+#include "Game.h"
 
 int main()
 {
-	App* app = new App();
-	return 0;
+	Game game;
+	game.run();
 }
