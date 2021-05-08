@@ -15,7 +15,7 @@ public:
 	void run(); 
 
 private:
-	void processEvents();
+	void processEvents(sf::Sprite& mouseTrigger);
 	void update();
 	void render();
 };

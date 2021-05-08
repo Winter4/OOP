@@ -2,15 +2,19 @@
 #include <SFML/Graphics.hpp>
 
 // basic textured object
-class Object abstract {
+class Object  {
 protected:
 	sf::RenderWindow* window; // main window link
-	sf::RectangleShape object; // main object - rectangle shape, contanes all the settings
-	sf::Texture texture; // texture for the rectangle
+	//sf::Texture texture; // texture for the rectangle
+	sf::Sprite object; // main object - sprite, contanes all the settings
+
+	Object();
 
 public:
-	Object(sf::RenderWindow* window, sf::Vector2f size, sf::Vector2f position, std::string textureFileName);
+	// links the window and sets the size and the position
+	Object(sf::RenderWindow* window, sf::Vector2f position);
+	~Object();
 
-	void virtual draw();
+	virtual void draw();
 };
 
