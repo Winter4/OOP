@@ -15,7 +15,7 @@ void Cell::setChip(Player player)
 		break;
 
 	case Player::PLAYER_1:
-		object.setTextureRect(sf::IntRect(0, 0, 45, 45));
+		object.setTextureRect(sf::IntRect(0, 0, 46, 46));
 		break;
 
 	case Player::PLAYER_2:
@@ -28,4 +28,20 @@ void Cell::setChip(Player player)
 sf::Vector2f Cell::getPosition()
 {
 	return object.getPosition();
+}
+
+bool Cell::checkCursorHovered(sf::Vector2i cursorPosition)
+{
+	/*
+	if (object.getGlobalBounds().contains(sf::Vector2f(cursorPosition))) { 
+		std::cout << object.getGlobalBounds().left << "  " << object.getGlobalBounds().top << "  " <<
+			object.getGlobalBounds().height << "  " << object.getGlobalBounds().width << "  " << std::endl;
+		return true; 
+	}
+	return false;
+	*/
+
+	sf::IntRect cellRect(sf::Vector2i(object.getPosition()), sf::Vector2i(45, 45));
+	if (cellRect.contains(cursorPosition)) return true;
+	return false;
 }

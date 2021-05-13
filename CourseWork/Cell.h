@@ -2,8 +2,9 @@
 #include "SFML/Graphics.hpp"
 #include "PlayerType.h"
 #include "TextureLinker.h"
+#include <iostream>
 
-#define CELLS_NUMBER 14
+#define CELLS_NUMBER 15
 
 class Cell : public TextureLinker {
 private:
@@ -33,5 +34,6 @@ public:
 	sf::Sprite& getSprite(); // returns the sprite link
 	void setChip(Player player); // set the pointed player's chip
 	sf::Vector2f getPosition();
+	bool checkCursorHovered(sf::Vector2i cursorPosition);
 };
 

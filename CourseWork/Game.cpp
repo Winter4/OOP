@@ -7,75 +7,64 @@ Game::Game()
 	background(&window, sf::Vector2f(0,0), "background.png"),
 	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
 	field(&window, sf::Vector2f(50, 20), "field2.png")
-{ }
+{ 
+	sf::FloatRect fieldRect = field.getRectangle();
+	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
+	lastHoveredCell = sf::Vector2i(7, 7);
+
+	window.setFramerateLimit(60);
+}
 
 void Game::run()
 {
 	field.setChip(sf::Vector2i(5, 0), Player::PLAYER_2); // TEMPORARY
 	field.setChip(sf::Vector2i(3, 0), Player::PLAYER_1); // TEMPORARY
 
-	sf::Texture greenCross;
-	greenCross.loadFromFile("greencross.png");
-	sf::Sprite mouseTrigger;
-	mouseTrigger.setTexture(greenCross);
-	mouseTrigger.setOrigin(sf::Vector2f(20, 20));
-
-
-	mouseTrigger.setPosition(50, 20);
-	window.draw(mouseTrigger);
-
-
 	// main loop
 	while (window.isOpen()) {
-		processEvents(mouseTrigger);
+		processEvents();
 		update();
 		render();
 	}
 }
 
-void Game::processEvents(sf::Sprite& mouseTrigger)
+void Game::processEvents()
 {
+	// event handling
 	sf::Event event;
 	window.pollEvent(event);
 
+	// the cursor pos inside of the game window (not the full screen!)
 	sf::Vector2i cursorPosition;
-	sf::Vector2f cellPosition;
-	sf::Rect<int> cellArea;
+	cursorPosition = sf::Mouse::getPosition(window);
+
+	// creating the rect to use its contains() method
+	sf::FloatRect fieldRect = field.getRectangle();
 
 	switch (event.type) {
+
 	case sf::Event::Closed: // closing the window (red X in the up right)
 		window.close();
 		break;
 
 	case sf::Event::MouseMoved: 
-		/*
-		cursorPosition = sf::Mouse::getPosition(window);
+		// if the cursor is hovering the field
+		if (fieldRect.contains(sf::Vector2f(cursorPosition))) {
+			lastHoveredCell = field.checkCellHovered(lastHoveredCell, cursorPosition);
 
-		for (size_t i = 0; i < CELLS_NUMBER; i++)
-			for (size_t j = 0; j < CELLS_NUMBER; j++) {
-				cellPosition = field.getCellPosition(sf::Vector2i(j, i));
-				cellArea = sf::Rect<int>(cellPosition.x - 15, cellPosition.y - 15, cellPosition.x + 15, cellPosition.y + 15);
-
-				sf::RectangleShape test;
-				test.setPosition(sf::Vector2f(cellArea.left, cellArea.top));
-				test.setSize(sf::Vector2f(cellArea.width, cellArea.height));
-				test.setFillColor(sf::Color::Red);
-				window.draw(test);
-				//system("pause");
-
-				if (cellArea.contains(cursorPosition)) {
-					mouseTrigger.setPosition(cellPosition);
-					window.draw(mouseTrigger);
-					return;
-					//throw std::exception("HZ");
-				}
-			}
-			*/
-
-		cursorPosition = sf::Mouse::getPosition(window);
-		
+			//system("cls");
+			if (lastHoveredCell == sf::Vector2i(-1, -1)) std::cout << "none" << std::endl;
+			std::cout << lastHoveredCell.x << "  " << lastHoveredCell.y;
+		}
 		break;
 		
+	case sf::Event::MouseButtonPressed:
+		if (event.key.code == sf::Mouse::Left) {
+			if (fieldRect.contains(sf::Vector2f(cursorPosition))) {
+				int allegedX = cursorPosition.x / 54, allegedY = cursorPosition.y / 54;
+				field.setChip(sf::Vector2i(allegedX - 1, allegedY - 1), Player::PLAYER_1);
+			}
+		}
 	}
 }
 
