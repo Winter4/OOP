@@ -8,17 +8,24 @@ Game::Game()
 	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
 	field(&window, sf::Vector2f(50, 20), "field2.png")
 { 
+	
 	sf::FloatRect fieldRect = field.getRectangle();
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
 	lastHoveredCell = sf::Vector2i(7, 7);
+	anyCellHovered = true;
 
-	window.setFramerateLimit(60);
+	greenCross.loadFromFile("greenCross.png");
+	cellHoverCross.setTexture(greenCross);
+	cellHoverCross.setOrigin(sf::Vector2f(22.5, 22.5));
+
+	//window.setFramerateLimit(60);
 }
 
 void Game::run()
 {
-	field.setChip(sf::Vector2i(5, 0), Player::PLAYER_2); // TEMPORARY
-	field.setChip(sf::Vector2i(3, 0), Player::PLAYER_1); // TEMPORARY
+	//field.setChip(sf::Vector2i(5, 5), Player::PLAYER_2); // TEMPORARY
+	//field.setChip(sf::Vector2i(3, 0), Player::PLAYER_1); // TEMPORARY
+	//field.setChip(sf::Vector2i(7, 7), Player::PLAYER_2);
 
 	// main loop
 	while (window.isOpen()) {
@@ -38,9 +45,6 @@ void Game::processEvents()
 	sf::Vector2i cursorPosition;
 	cursorPosition = sf::Mouse::getPosition(window);
 
-	// creating the rect to use its contains() method
-	sf::FloatRect fieldRect = field.getRectangle();
-
 	switch (event.type) {
 
 	case sf::Event::Closed: // closing the window (red X in the up right)
@@ -49,21 +53,27 @@ void Game::processEvents()
 
 	case sf::Event::MouseMoved: 
 		// if the cursor is hovering the field
-		if (fieldRect.contains(sf::Vector2f(cursorPosition))) {
-			lastHoveredCell = field.checkCellHovered(lastHoveredCell, cursorPosition);
+		if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) {
+			system("cls");
+			int allegedX = cursorPosition.x / 54, allegedY = cursorPosition.y / 54;
+			anyCellHovered = field.isCellHovered(sf::Vector2i(allegedX, allegedY), lastHoveredCell, cursorPosition);
+			cellHoverCross.setPosition(field.getCellPosition(lastHoveredCell));
 
-			//system("cls");
-			if (lastHoveredCell == sf::Vector2i(-1, -1)) std::cout << "none" << std::endl;
-			std::cout << lastHoveredCell.x << "  " << lastHoveredCell.y;
+			std::cout << cursorPosition.x << "  " << cursorPosition.y << std::endl;
+			std::cout << anyCellHovered << std::endl;
+			std::cout << lastHoveredCell.x << "  " << lastHoveredCell.y << std::endl;
+
+
 		}
+		else system("cls");
+		
 		break;
 		
 	case sf::Event::MouseButtonPressed:
 		if (event.key.code == sf::Mouse::Left) {
-			if (fieldRect.contains(sf::Vector2f(cursorPosition))) {
-				int allegedX = cursorPosition.x / 54, allegedY = cursorPosition.y / 54;
-				field.setChip(sf::Vector2i(allegedX - 1, allegedY - 1), Player::PLAYER_1);
-			}
+			if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) 
+				if (anyCellHovered)
+					field.setChip(sf::Vector2i(lastHoveredCell.x, lastHoveredCell.y), Player::PLAYER_1);
 		}
 	}
 }
@@ -79,6 +89,8 @@ void Game::render()
 
 	background.draw();
 	field.draw();
+
+	if (anyCellHovered) window.draw(cellHoverCross);
 
 	window.display();
 }

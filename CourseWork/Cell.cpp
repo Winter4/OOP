@@ -15,11 +15,11 @@ void Cell::setChip(Player player)
 		break;
 
 	case Player::PLAYER_1:
-		object.setTextureRect(sf::IntRect(0, 0, 46, 46));
+		object.setTextureRect(sf::IntRect(0, 0, 45, 45));
 		break;
 
 	case Player::PLAYER_2:
-		object.setTextureRect(sf::IntRect(46, 0, 45, 45));
+		object.setTextureRect(sf::IntRect(45, 0, 45, 45));
 		break;
 	}
 	object.setTexture(*texture);
@@ -30,18 +30,12 @@ sf::Vector2f Cell::getPosition()
 	return object.getPosition();
 }
 
-bool Cell::checkCursorHovered(sf::Vector2i cursorPosition)
+bool Cell::isCursorHovering(sf::Vector2i cursorPosition)
 {
-	/*
-	if (object.getGlobalBounds().contains(sf::Vector2f(cursorPosition))) { 
-		std::cout << object.getGlobalBounds().left << "  " << object.getGlobalBounds().top << "  " <<
-			object.getGlobalBounds().height << "  " << object.getGlobalBounds().width << "  " << std::endl;
-		return true; 
-	}
-	return false;
-	*/
-
-	sf::IntRect cellRect(sf::Vector2i(object.getPosition()), sf::Vector2i(45, 45));
-	if (cellRect.contains(cursorPosition)) return true;
-	return false;
+	//std::cout << "pos" << object.getPosition().x << "  " << object.getPosition().y << std::endl;
+	sf::Vector2f cellPosition = object.getPosition();
+	if (sf::FloatRect(cellPosition.x - 23, cellPosition.y - 23, 46, 46).contains(cursorPosition.x, cursorPosition.y))
+		return true;
+	else return false;
+	
 }

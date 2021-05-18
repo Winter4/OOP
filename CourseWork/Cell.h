@@ -25,7 +25,7 @@ public:
 		index = indexToSet;
 
 		// setting the origin of the sprite to its center to draw it correctly
-		object.setOrigin(sf::Vector2f(22.5, 22.5));
+		object.setOrigin(sf::Vector2f(23, 23));
 
 		isFilled = false;
 		player = Player::EMPTY;
@@ -34,6 +34,6 @@ public:
 	sf::Sprite& getSprite(); // returns the sprite link
 	void setChip(Player player); // set the pointed player's chip
 	sf::Vector2f getPosition();
-	bool checkCursorHovered(sf::Vector2i cursorPosition);
+	bool isCursorHovering(sf::Vector2i cursorPosition);
 };
 

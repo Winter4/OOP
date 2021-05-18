@@ -20,10 +20,9 @@ public:
 				// setting sprite position to draw it correctly
 				// fP.x + 54: 54 is a grid's margin
 				// index.x * 54: 54 is a grid cell's width (or height: square it is)
-				//object.setPosition(sf::Vector2f(fieldPosition.x + 54 + index.x * 54, fieldPosition.y + 54 + index.y * 54));
-
 				float x = fieldPosition.x + 54 + j * 54;
 				float y = fieldPosition.y + 54 + i * 54;
+
 				// setting every cell's pos, index and fillnes (empty)
 				cells[i][j] = Cell(window, sf::Vector2f(x, y), &chipsTexture, sf::Vector2i(i, j));
 			}
@@ -39,6 +38,6 @@ public:
 	sf::IntRect getSize();
 	sf::FloatRect getRectangle();
 	// returns the cell that's hovered with the cursor
-	sf::Vector2i checkCellHovered(sf::Vector2i lastHoveredCell, sf::Vector2i cursorPosition);
+	bool isCellHovered(sf::Vector2i allegedCell, sf::Vector2i& lastHoveredCell, sf::Vector2i cursorPosition);
 };
 

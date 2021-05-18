@@ -12,6 +12,10 @@ private:
 	Field field;
 
 	sf::Vector2i lastHoveredCell;
+	bool anyCellHovered;
+
+	sf::Texture greenCross;
+	sf::Sprite cellHoverCross;
 
 public:
 	Game();

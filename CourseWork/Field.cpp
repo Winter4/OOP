@@ -35,27 +35,26 @@ sf::FloatRect Field::getRectangle()
 	return object.getGlobalBounds();
 }
 
-sf::Vector2i Field::checkCellHovered(sf::Vector2i lastHoveredCell, sf::Vector2i cursorPosition)
+bool Field::isCellHovered(sf::Vector2i allegedCell, sf::Vector2i& lastHoveredCell, sf::Vector2i cursorPosition)
 {
-	// cursor is still on the last hovered cell
-	if (cells[lastHoveredCell.y][lastHoveredCell.x].checkCursorHovered(cursorPosition))
-		return lastHoveredCell;
-
-	// if not, checking the around cells
+	// check the cells to contain the cursor
 	for (short i = -1; i < 2; i++) {
 		// out of field check
-		if (lastHoveredCell.x + i < 0 or lastHoveredCell.x + i > 14) continue;
+		if (allegedCell.x + i < 0 or allegedCell.x + i > 14) continue;
 
 		// out of field check
 		for (short j = -1; j < 2; j++) {
-			if (lastHoveredCell.y + j < 0 or lastHoveredCell.y + j > 14) continue;
+			if (allegedCell.y + j < 0 or allegedCell.y + j > 14) continue;
 
-			// checking itself
-			if (cells[lastHoveredCell.y + j][lastHoveredCell.x + i].checkCursorHovered(cursorPosition))
-				return sf::Vector2i(lastHoveredCell.y + j, lastHoveredCell.x + i);
+			// checking 
+			if (cells[allegedCell.y + j][allegedCell.x + i].isCursorHovering(cursorPosition)) {
+				lastHoveredCell.x = allegedCell.x + i;
+				lastHoveredCell.y = allegedCell.y + j;
+				return true;
+			}
 		}
 	}
 
-	// if the cursor doesn't hover any cell, return some kind of a flag
-	return { -1, -1 };
+	// if the cursor doesn't hover any cell
+	return false;
 }
