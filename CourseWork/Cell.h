@@ -35,5 +35,6 @@ public:
 	void setChip(Player player); // set the pointed player's chip
 	sf::Vector2f getPosition();
 	bool isCursorHovering(sf::Vector2i cursorPosition);
+	bool filled();
 };
 

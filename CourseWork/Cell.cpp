@@ -23,6 +23,7 @@ void Cell::setChip(Player player)
 		break;
 	}
 	object.setTexture(*texture);
+	isFilled = true;
 }
 
 sf::Vector2f Cell::getPosition()
@@ -38,4 +39,9 @@ bool Cell::isCursorHovering(sf::Vector2i cursorPosition)
 		return true;
 	else return false;
 	
+}
+
+bool Cell::filled()
+{
+	return isFilled;
 }

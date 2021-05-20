@@ -8,17 +8,12 @@ Game::Game()
 	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
 	field(&window, sf::Vector2f(50, 20), "field2.png")
 { 
-	
 	sf::FloatRect fieldRect = field.getRectangle();
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
-	lastHoveredCell = sf::Vector2i(7, 7);
-	anyCellHovered = true;
 
-	greenCross.loadFromFile("greenCross.png");
-	cellHoverCross.setTexture(greenCross);
-	cellHoverCross.setOrigin(sf::Vector2f(22.5, 22.5));
 
-	//window.setFramerateLimit(60);
+
+	window.setFramerateLimit(60);
 }
 
 void Game::run()
@@ -53,27 +48,18 @@ void Game::processEvents()
 
 	case sf::Event::MouseMoved: 
 		// if the cursor is hovering the field
-		if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) {
-			system("cls");
-			int allegedX = cursorPosition.x / 54, allegedY = cursorPosition.y / 54;
-			anyCellHovered = field.isCellHovered(sf::Vector2i(allegedX, allegedY), lastHoveredCell, cursorPosition);
-			cellHoverCross.setPosition(field.getCellPosition(lastHoveredCell));
-
-			std::cout << cursorPosition.x << "  " << cursorPosition.y << std::endl;
-			std::cout << anyCellHovered << std::endl;
-			std::cout << lastHoveredCell.x << "  " << lastHoveredCell.y << std::endl;
-
-
-		}
+		if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) 
+			field.checkCellHovering(cursorPosition);
 		else system("cls");
 		
 		break;
 		
 	case sf::Event::MouseButtonPressed:
+		// if click, try to set the chip
 		if (event.key.code == sf::Mouse::Left) {
 			if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) 
-				if (anyCellHovered)
-					field.setChip(sf::Vector2i(lastHoveredCell.x, lastHoveredCell.y), Player::PLAYER_1);
+				if (field.chipPhantomActive())
+					field.setChip(Player::PLAYER_1);
 		}
 	}
 }
@@ -89,8 +75,6 @@ void Game::render()
 
 	background.draw();
 	field.draw();
-
-	if (anyCellHovered) window.draw(cellHoverCross);
 
 	window.display();
 }

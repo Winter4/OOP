@@ -1,8 +1,9 @@
 #include "Field.h"
 
-void Field::setChip(sf::Vector2i index, Player currentPlayer)
+void Field::setChip(Player currentPlayer)
 {
-	cells[index.y][index.x].setChip(currentPlayer);
+	cells[chipPhantom.getCell().y][chipPhantom.getCell().x].setChip(currentPlayer);
+	chipPhantom.setState(false);
 }
 
 void Field::draw()
@@ -13,30 +14,22 @@ void Field::draw()
 	for (size_t i = 0; i < CELLS_NUMBER; i++)
 		for (size_t j = 0; j < CELLS_NUMBER; j++)
 			window->draw(cells[i][j].getSprite());
+
+	chipPhantom.draw();
 }
 
-sf::Vector2f Field::getCellPosition(sf::Vector2i index)
-{
-	return cells[index.y][index.x].getPosition();
-}
+sf::Vector2f Field::getCellPosition(sf::Vector2i index) { return cells[index.y][index.x].getPosition(); }
 
-sf::Vector2f Field::getPosition()
-{
-	return object.getPosition();
-}
+sf::Vector2f Field::getPosition() { return object.getPosition(); }
 
-sf::IntRect Field::getSize()
-{
-	return object.getTextureRect();
-}
+sf::IntRect Field::getSize() { return object.getTextureRect(); }
 
-sf::FloatRect Field::getRectangle()
-{
-	return object.getGlobalBounds();
-}
+sf::FloatRect Field::getRectangle() { return object.getGlobalBounds(); }
 
-bool Field::isCellHovered(sf::Vector2i allegedCell, sf::Vector2i& lastHoveredCell, sf::Vector2i cursorPosition)
+void Field::checkCellHovering(sf::Vector2i cursorPosition)
 {
+	sf::Vector2i allegedCell(cursorPosition.x / 54, cursorPosition.y / 54);
+
 	// check the cells to contain the cursor
 	for (short i = -1; i < 2; i++) {
 		// out of field check
@@ -48,13 +41,20 @@ bool Field::isCellHovered(sf::Vector2i allegedCell, sf::Vector2i& lastHoveredCel
 
 			// checking 
 			if (cells[allegedCell.y + j][allegedCell.x + i].isCursorHovering(cursorPosition)) {
-				lastHoveredCell.x = allegedCell.x + i;
-				lastHoveredCell.y = allegedCell.y + j;
-				return true;
+				// updating last hovered cell
+				chipPhantom.setCell(sf::Vector2i(allegedCell.x + i, allegedCell.y + j));
+				chipPhantom.setPosition(cells[allegedCell.y + j][allegedCell.x + i].getPosition());
+
+				if (!cells[allegedCell.y + j][allegedCell.x + i].filled())
+					chipPhantom.setState(true);
+
+				return;
 			}
 		}
 	}
 
 	// if the cursor doesn't hover any cell
-	return false;
+	chipPhantom.setState(false);
 }
+
+bool Field::chipPhantomActive() { return chipPhantom.getState(); }

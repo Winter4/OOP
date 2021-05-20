@@ -10,12 +10,7 @@ private:
 	sf::RenderWindow window; // main  window
 	Background background; 
 	Field field;
-
-	sf::Vector2i lastHoveredCell;
-	bool anyCellHovered;
-
-	sf::Texture greenCross;
-	sf::Sprite cellHoverCross;
+	
 
 public:
 	Game();
