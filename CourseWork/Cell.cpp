@@ -45,3 +45,5 @@ bool Cell::filled()
 {
 	return isFilled;
 }
+
+Player Cell::getPlayer() { return player; }

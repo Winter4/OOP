@@ -36,5 +36,7 @@ public:
 	sf::Vector2f getPosition();
 	bool isCursorHovering(sf::Vector2i cursorPosition);
 	bool filled();
+
+	Player getPlayer();
 };
 

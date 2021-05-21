@@ -1,9 +1,47 @@
 #include "Field.h"
 
-void Field::setChip(Player currentPlayer)
+bool Field::setChip(Player currentPlayer)
 {
-	cells[chipPhantom.getCell().y][chipPhantom.getCell().x].setChip(currentPlayer);
+	sf::Vector2i currentCell = chipPhantom.getCell();
+	cells[currentCell.y][currentCell.x].setChip(currentPlayer);
 	chipPhantom.setState(false);
+
+	// win check
+	//
+	// counts the number of straight-going chips
+	short straightCount = 0;
+	
+	short step = -1;
+
+	// checking the horizontal
+	for (int j = 0, count = 0; straightCount != 5 and count < 8; j += step, count++) {
+
+		if (cells[currentCell.y][currentCell.x + j].getPlayer() == Player::EMPTY)
+			throw std::logic_error("Set chip's owner is PLAYER::EMPTY.");
+
+		if (cells[currentCell.y][currentCell.x + j].getPlayer() == currentPlayer)
+			straightCount++;
+		else {
+			step *= -1;
+			j = 0;
+		}
+	}
+	if (straightCount == 5) return true;
+	else straightCount = 0;
+
+	// checking the main diag
+	for (int i = 0, count = 0; straightCount != 5 and count < 8; i += step) {
+
+		if (cells[currentCell.y + i][currentCell.x + i].getPlayer() == Player::EMPTY)
+			throw std::logic_error("Set chip's owner is PLAYER::EMPTY.");
+
+		if (cells[currentCell.y + i][currentCell.x + i].getPlayer() == currentPlayer)
+			straightCount++;
+		else {
+			step *= -1;
+			i = 0;
+		}
+	}
 }
 
 void Field::draw()

@@ -36,7 +36,7 @@ public:
 	// draw a field with all the cells
 	void draw(); 
 	// set chip to the pointed position with a cur player's chip
-	void setChip(Player currentPlayer);
+	bool setChip(Player currentPlayer);
 	// get the pointed cell position
 	sf::Vector2f getCellPosition(sf::Vector2i index);
 	sf::Vector2f getPosition();
