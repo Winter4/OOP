@@ -1,5 +1,27 @@
 #include "Field.h"
 
+bool Field::checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector2i line)
+{
+	// counts the number of straight-going chips
+	short straightCount = 0;
+
+	for (short i = 0, count = 0, direction = -1; straightCount != 5 and count < 9; i += direction, count++) {
+
+		if (currentCell.x + i < 0 or currentCell.x + i > 14) continue;
+
+		if (cells[currentCell.y + i * line.y][currentCell.x + i * line.x].getPlayer() == currentPlayer)
+			straightCount++;
+		else {
+			if (direction == 1) break;
+
+			direction = 1;
+			i = 0;
+		}
+	}
+
+	return straightCount == 5;
+}
+
 bool Field::setChip(Player currentPlayer)
 {
 	sf::Vector2i currentCell = chipPhantom.getCell();
@@ -8,83 +30,11 @@ bool Field::setChip(Player currentPlayer)
 
 	// win check
 	//
-	// counts the number of straight-going chips
-	short straightCount = 0;
-
-	// checking the horizontal
-	for (short j = 0, count = 0, step = -1; straightCount != 5 and count < 9; j += step, count++) {
-	
-		if (currentCell.x + j < 0 or currentCell.x + j > 14) continue;
-
-		if (cells[currentCell.y][currentCell.x + j].getPlayer() == currentPlayer)
-			straightCount++;
-		else {
-			if (step == 1) break;
-
-			step *= -1;
-			j = 0;
-		}
-	}
-	if (straightCount == 5) return true;
-	else straightCount = 0;
-
-	// checking the main diag
-	for (short i = 0, count = 0, step = -1; straightCount != 5 and count < 9; i += step, count++) {
-
-		if (currentCell.x + i < 0 or currentCell.x + i > 14 or
-			currentCell.y + i < 0 or currentCell.y + i > 14)
-			continue;
-
-		if (cells[currentCell.y + i][currentCell.x + i].getPlayer() == currentPlayer)
-			straightCount++;
-		else {
-			if (step == 1) break;
-
-			step *= -1;
-			i = 0;
-		}
-	}
-	if (straightCount == 5) return true;
-	else straightCount = 0;
-
-	// checking the alternate diag
-	for (short i = 0, count = 0, step = -1; straightCount != 5 and count < 9; i += step, count++) {
-
-		if (currentCell.x + i < 0 or currentCell.x + i > 14 or
-			currentCell.y + i < 0 or currentCell.y + i > 14)
-			continue;
-
-		if (cells[currentCell.y + i][currentCell.x - i].getPlayer() == currentPlayer)
-			straightCount++;
-		else {
-			if (step == 1) break;
-
-			step *= -1;
-			i = 0;
-		}
-	}
-	if (straightCount == 5) return true;
-	else straightCount = 0;
-
-	// checking the vertical
-	for (short i = 0, count = 0, step = -1; straightCount != 5 and count < 9; i += step, count++) {
-
-		if (currentCell.y + i < 0 or currentCell.y + i > 14)
-			continue;
-
-		if (cells[currentCell.y + i][currentCell.x].getPlayer() == currentPlayer)
-			straightCount++;
-		else {
-			if (step == 1) break;
-
-			step *= -1;
-			i = 0;
-		}
-	}
-	if (straightCount == 5) return true;
-	else straightCount = 0;
-
-	return false;
+	return 
+		checkLine(currentPlayer, currentCell, { 1,0 })		// horiznotal
+		or checkLine(currentPlayer, currentCell, { 0,1 })	// vertical
+		or checkLine(currentPlayer, currentCell, { 1,1 })	// main diag
+		or checkLine(currentPlayer, currentCell, { 1,-1 }); // alt diag
 }
 
 void Field::draw()
