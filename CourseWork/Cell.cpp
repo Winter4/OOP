@@ -5,11 +5,11 @@ sf::Sprite& Cell::getSprite()
 	return object;
 }
 
-void Cell::setChip(Player player)
+void Cell::setChip(Player newPlayer)
 {
 	// the texture is 90x45 png, so there are two squares 45x45
 	// the left square is a black ship, and the right square is a white chip
-	switch (player) {
+	switch (newPlayer) {
 	case Player::EMPTY:
 		throw std::logic_error("Empty player arg.");
 		break;
@@ -24,6 +24,7 @@ void Cell::setChip(Player player)
 	}
 	object.setTexture(*texture);
 	isFilled = true;
+	player = newPlayer;
 }
 
 sf::Vector2f Cell::getPosition()

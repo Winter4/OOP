@@ -32,7 +32,7 @@ public:
 	}
 
 	sf::Sprite& getSprite(); // returns the sprite link
-	void setChip(Player player); // set the pointed player's chip
+	void setChip(Player newPlayer); // set the pointed player's chip
 	sf::Vector2f getPosition();
 	bool isCursorHovering(sf::Vector2i cursorPosition);
 	bool filled();

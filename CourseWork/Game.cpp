@@ -12,7 +12,7 @@ Game::Game()
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
 
 
-
+	gameOver = false;
 	window.setFramerateLimit(60);
 }
 
@@ -50,7 +50,6 @@ void Game::processEvents()
 		// if the cursor is hovering the field
 		if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) 
 			field.checkCellHovering(cursorPosition);
-		else system("cls");
 		
 		break;
 		
@@ -59,14 +58,23 @@ void Game::processEvents()
 		if (event.key.code == sf::Mouse::Left) {
 			if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) 
 				if (field.chipPhantomActive())
-					field.setChip(Player::PLAYER_1);
+					gameOver = field.setChip(Player::PLAYER_1);
 		}
 	}
 }
 
 void Game::update()
 {
+	if (gameOver) {
+		system("cls");
+		std::cout << "GAME OVER! \n";
+		system("pause");
 
+		window.close();
+	}
+
+	system("cls");
+	std::cout << gameOver;
 }
 
 void Game::render()

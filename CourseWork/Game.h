@@ -11,6 +11,7 @@ private:
 	Background background; 
 	Field field;
 	
+	bool gameOver;
 
 public:
 	Game();
