@@ -1,9 +1,8 @@
 #include "Timer.h"
 
-Timer::Timer(sf::RenderWindow* window)
+Timer::Timer(sf::RenderWindow* window, sf::Font& font)
 {
 	this->window = window;
-	if (not font.loadFromFile("gilroy.ttf")) throw std::runtime_error("Error while font loading.");
 
 	text.setPosition(sf::Vector2f(1100, 200));
 	text.setFillColor(sf::Color::Black);
@@ -41,5 +40,7 @@ short Timer::getTime()
 void Timer::draw()
 {
 	text.setString(std::to_string(time));
+	if (time <= 10) text.setFillColor(sf::Color::Red);
+	else text.setFillColor(sf::Color::Black);
 	window->draw(text);
 }

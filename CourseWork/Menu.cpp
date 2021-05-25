@@ -43,9 +43,10 @@ void Menu::open(TextureOwner& background)
 				}
 				break;
 
-				case sf::Event::KeyPressed:
-					if (event.key.code == sf::Keyboard::Escape)
-						return;
+			case sf::Event::KeyPressed:
+				if (event.key.code == sf::Keyboard::Escape)
+					return;
+				break;
 			}
 		}
 

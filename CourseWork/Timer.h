@@ -12,7 +12,9 @@ private:
 	short time;
 
 public:
-	Timer(sf::RenderWindow* window);
+	Timer() {}
+	Timer(sf::RenderWindow* window, sf::Font& font);
+
 	void substractSecond();
 	void refresh();
 	sf::Time getElapsedTime();

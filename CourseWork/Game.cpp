@@ -6,10 +6,14 @@ Game::Game()
 	// the background picture is the same size with the window; takes its beginning in the up left corner
 	background(&window, sf::Vector2f(0, 0), "background.png"),
 	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
-	field(&window, sf::Vector2f(50, 20), "field2.png"),
-	menu(&window, sf::Vector2f(100, 100), "menu.png"),
-	timer(&window)
+	field(&window, sf::Vector2f(50, 20), "field2.png")
 { 
+	if (not font.loadFromFile("gilroy.ttf")) throw std::runtime_error("Error while font loading.");
+	
+	menu = Menu(&window, sf::Vector2f(100, 100), "menu.png", font);
+	timer = Timer(&window, font);
+	//board = Board(&window, sf::Vector2f(960, 485), "board.png", font);
+
 	sf::FloatRect fieldRect = field.getRectangle();
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
 
@@ -111,6 +115,7 @@ void Game::render()
 	background.draw();
 	field.draw();
 	timer.draw();
+	//board.draw();
 
 	window.display();
 }
