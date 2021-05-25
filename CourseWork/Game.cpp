@@ -8,10 +8,12 @@ Game::Game()
 	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
 	field(&window, sf::Vector2f(50, 20), "field2.png"),
 	menu(&window, sf::Vector2f(100, 100), "menu.png"),
-	timerText(&window)
+	timer(&window)
 { 
 	sf::FloatRect fieldRect = field.getRectangle();
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
+
+	currentPlayer = PLAYER_1;
 
 	gameOver = false;
 	window.setFramerateLimit(60);
@@ -28,6 +30,12 @@ void Game::run()
 		update();
 		render();
 	}
+}
+
+void Game::changePlayer()
+{
+	if (currentPlayer == Player::PLAYER_1) currentPlayer = Player::PLAYER_2;
+	else currentPlayer = Player::PLAYER_1;
 }
 
 void Game::processEvents()
@@ -59,8 +67,11 @@ void Game::processEvents()
 		// if click, try to set the chip
 		if (event.key.code == sf::Mouse::Left) {
 			if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) 
-				if (field.chipPhantomActive())
-					gameOver = field.setChip(Player::PLAYER_1);
+				if (field.chipPhantomActive()) {
+					gameOver = field.setChip(currentPlayer);
+					changePlayer();
+					timer.refresh();
+				}
 		}
 		break;
 
@@ -72,12 +83,16 @@ void Game::processEvents()
 
 void Game::update()
 {
+	if (timer.getTime() <= 0) gameOver = true;
+
 	if (timer.getElapsedTime() >= sf::seconds(1)) {
-		timerText.substractSecond();
+		timer.substractSecond();
 		timer.restart();
 	}
 
 	if (gameOver) {
+		render();
+
 		system("cls");
 		std::cout << "GAME OVER! \n";
 		system("pause");
@@ -95,7 +110,7 @@ void Game::render()
 
 	background.draw();
 	field.draw();
-	timerText.draw();
+	timer.draw();
 
 	window.display();
 }

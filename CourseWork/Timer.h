@@ -8,12 +8,16 @@ private:
 	sf::Font font;
 	sf::Text text;
 
+	sf::Clock timer;
 	short time;
 
 public:
 	Timer(sf::RenderWindow* window);
 	void substractSecond();
 	void refresh();
+	sf::Time getElapsedTime();
+	void restart();
+	short getTime();
 	void draw();
 };
 

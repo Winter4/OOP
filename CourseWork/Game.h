@@ -14,16 +14,18 @@ private:
 	Field field;
 
 	Menu menu;
-	Timer timerText;
-	sf::Clock timer;
+	Timer timer;
 	
 	bool gameOver;
+	Player currentPlayer;
 
 public:
 	Game();
 	void run(); 
 
 private:
+	void changePlayer();
+
 	void processEvents();
 	void update();
 	void render();
