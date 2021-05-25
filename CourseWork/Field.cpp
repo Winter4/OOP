@@ -51,11 +51,11 @@ void Field::draw()
 
 sf::Vector2f Field::getCellPosition(sf::Vector2i index) { return cells[index.y][index.x].getPosition(); }
 
-sf::Vector2f Field::getPosition() { return object.getPosition(); }
+sf::Vector2f Field::getPosition() { return sprite.getPosition(); }
 
-sf::IntRect Field::getSize() { return object.getTextureRect(); }
+sf::IntRect Field::getSize() { return sprite.getTextureRect(); }
 
-sf::FloatRect Field::getRectangle() { return object.getGlobalBounds(); }
+sf::FloatRect Field::getRectangle() { return sprite.getGlobalBounds(); }
 
 void Field::checkCellHovering(sf::Vector2i cursorPosition)
 {

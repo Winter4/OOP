@@ -21,7 +21,7 @@ public:
 		// loading chips texture
 		if (!chipsTexture.loadFromFile("chips.png")) throw std::exception("Texture init error.");
 
-		sf::Vector2f fieldPosition = object.getPosition();
+		sf::Vector2f fieldPosition = sprite.getPosition();
 		for (size_t i = 0; i < CELLS_NUMBER; i++)
 			for (size_t j = 0; j < CELLS_NUMBER; j++) {
 				// setting sprite position to draw it correctly

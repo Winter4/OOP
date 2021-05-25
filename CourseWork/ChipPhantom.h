@@ -18,7 +18,7 @@ public:
 		state = true;
 		index = sf::Vector2i(7, 7);
 
-		object.setOrigin(sf::Vector2f(22.5, 22.5));
+		sprite.setOrigin(sf::Vector2f(22.5, 22.5));
 	}
 
 	void draw();

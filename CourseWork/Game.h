@@ -4,12 +4,18 @@
 
 #include "Background.h"
 #include "Field.h"
+#include "Menu.h"
+#include "Timer.h"
 
 class Game {
 private:
 	sf::RenderWindow window; // main  window
 	Background background; 
 	Field field;
+
+	Menu menu;
+	Timer timerText;
+	sf::Clock timer;
 	
 	bool gameOver;
 
@@ -23,4 +29,4 @@ private:
 	void render();
 };
 
-// TODO: win check
+

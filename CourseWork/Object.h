@@ -6,7 +6,7 @@ class Object  {
 protected:
 	sf::RenderWindow* window; // main window link
 	//sf::Texture texture; // texture for the rectangle
-	sf::Sprite object; // main object - sprite, contanes all the settings
+	sf::Sprite sprite; // main object - sprite, contanes all the settings
 
 	Object();
 

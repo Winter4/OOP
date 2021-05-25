@@ -1,16 +1,17 @@
 #include "Game.h"
 
-Game::Game() 
-	// the window is 1400x900 rect (the w-h values were chosen with hit-or-miss method)
-	: window(sf::VideoMode(1400, 900), "Rendzu!"), 
+Game::Game()
+// the window is 1400x900 rect (the w-h values were chosen with hit-or-miss method)
+	: window(sf::VideoMode(1400, 900), "Rendzu!"),
 	// the background picture is the same size with the window; takes its beginning in the up left corner
-	background(&window, sf::Vector2f(0,0), "background.png"),
+	background(&window, sf::Vector2f(0, 0), "background.png"),
 	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
-	field(&window, sf::Vector2f(50, 20), "field2.png")
+	field(&window, sf::Vector2f(50, 20), "field2.png"),
+	menu(&window, sf::Vector2f(100, 100), "menu.png"),
+	timerText(&window)
 { 
 	sf::FloatRect fieldRect = field.getRectangle();
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
-
 
 	gameOver = false;
 	window.setFramerateLimit(60);
@@ -18,10 +19,9 @@ Game::Game()
 
 void Game::run()
 {
-	//field.setChip(sf::Vector2i(5, 5), Player::PLAYER_2); // TEMPORARY
-	//field.setChip(sf::Vector2i(3, 0), Player::PLAYER_1); // TEMPORARY
-	//field.setChip(sf::Vector2i(7, 7), Player::PLAYER_2);
+	menu.open(background);
 
+	timer.restart();
 	// main loop
 	while (window.isOpen()) {
 		processEvents();
@@ -39,6 +39,8 @@ void Game::processEvents()
 	// the cursor pos inside of the game window (not the full screen!)
 	sf::Vector2i cursorPosition;
 	cursorPosition = sf::Mouse::getPosition(window);
+	
+	std::cout << std::endl << cursorPosition.x << "  " << cursorPosition.y << std::endl;
 
 	switch (event.type) {
 
@@ -60,11 +62,21 @@ void Game::processEvents()
 				if (field.chipPhantomActive())
 					gameOver = field.setChip(Player::PLAYER_1);
 		}
+		break;
+
+		case sf::Event::KeyPressed:
+			if (event.key.code == sf::Keyboard::Escape)
+				menu.open(background);
 	}
 }
 
 void Game::update()
 {
+	if (timer.getElapsedTime() >= sf::seconds(1)) {
+		timerText.substractSecond();
+		timer.restart();
+	}
+
 	if (gameOver) {
 		system("cls");
 		std::cout << "GAME OVER! \n";
@@ -83,6 +95,7 @@ void Game::render()
 
 	background.draw();
 	field.draw();
+	timerText.draw();
 
 	window.display();
 }

@@ -12,7 +12,7 @@ public:
 		// loading a texture
 		if (!texture.loadFromFile(textureFileName)) throw std::exception("Texture init error");
 		// setting the texture
-		object.setTexture(texture);
+		sprite.setTexture(texture);
 	}
 };
 

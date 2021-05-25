@@ -9,7 +9,7 @@ void ChipPhantom::draw()
 
 void ChipPhantom::setPosition(sf::Vector2f positionToSet)
 {
-	object.setPosition(positionToSet);
+	sprite.setPosition(positionToSet);
 }
 
 void ChipPhantom::setCell(sf::Vector2i indexToSet)

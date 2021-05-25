@@ -25,7 +25,7 @@ public:
 		index = indexToSet;
 
 		// setting the origin of the sprite to its center to draw it correctly
-		object.setOrigin(sf::Vector2f(23, 23));
+		sprite.setOrigin(sf::Vector2f(23, 23));
 
 		isFilled = false;
 		player = Player::EMPTY;

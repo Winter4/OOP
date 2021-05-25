@@ -24,10 +24,13 @@
     <ClCompile Include="ChipPhantom.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuTale.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TextureLinker.cpp" />
     <ClCompile Include="TextureOwner.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
@@ -35,10 +38,13 @@
     <ClInclude Include="ChipPhantom.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuTale.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="PlayerType.h" />
     <ClInclude Include="TextureLinker.h" />
     <ClInclude Include="TextureOwner.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
