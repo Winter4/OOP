@@ -6,7 +6,7 @@
 #include "Field.h"
 #include "Menu.h"
 #include "Timer.h"
-//#include "Board.h"
+#include "Board.h"
 
 class Game {
 private:
@@ -17,8 +17,7 @@ private:
 	Menu menu;
 	Timer timer;
 
-	sf::Font font;
-	//Board board;
+	Board board;
 	
 	bool gameOver;
 	Player currentPlayer;

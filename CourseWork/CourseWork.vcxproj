@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="ChipPhantom.cpp" />
     <ClCompile Include="Field.cpp" />
@@ -34,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Board.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="ChipPhantom.h" />
     <ClInclude Include="Field.h" />

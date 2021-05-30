@@ -8,9 +8,9 @@ Game::Game()
 	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
 	field(&window, sf::Vector2f(50, 20), "field2.png"),
 	menu(&window, sf::Vector2f(100,100),  "menu.png"),
-	timer(&window)
+	timer(&window),
+	board(&window, sf::Vector2f(960, 485), "board.png")
 { 
-	if (not font.loadFromFile("gilroy.ttf")) throw std::runtime_error("Error while font loading.");
 	
 	//board = Board(&window, sf::Vector2f(960, 485), "board.png", font);
 
@@ -18,6 +18,7 @@ Game::Game()
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
 
 	currentPlayer = PLAYER_1;
+	board.setText("Turn: \nblack.");
 
 	gameOver = false;
 	window.setFramerateLimit(60);
@@ -38,8 +39,14 @@ void Game::run()
 
 void Game::changePlayer()
 {
-	if (currentPlayer == Player::PLAYER_1) currentPlayer = Player::PLAYER_2;
-	else currentPlayer = Player::PLAYER_1;
+	if (currentPlayer == Player::PLAYER_1) { 
+		board.setText("Turn: \nwhite.");
+		currentPlayer = Player::PLAYER_2; 
+	}
+	else {
+		board.setText("Turn: \nblack.");
+		currentPlayer = Player::PLAYER_1;
+	}
 }
 
 void Game::processEvents()
@@ -115,7 +122,7 @@ void Game::render()
 	background.draw();
 	field.draw();
 	timer.draw();
-	//board.draw();
+	board.draw();
 
 	window.display();
 }
