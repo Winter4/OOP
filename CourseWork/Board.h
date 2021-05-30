@@ -14,15 +14,12 @@ public:
 		if (not font.loadFromFile("gilroy.ttf")) throw std::runtime_error("Error while board text loading.");
 		text.setFont(font);
 
-		text.setCharacterSize(36);
+		text.setCharacterSize(30);
 		text.setFillColor(sf::Color::White);
+		setText("Make your move!");
 
-		// center text
-		sf::FloatRect textRect = text.getLocalBounds();
-		text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 		text.setPosition(sf::Vector2f(sprite.getGlobalBounds().left + sprite.getGlobalBounds().width / 2.0f,
 			sprite.getGlobalBounds().top + sprite.getGlobalBounds().height / 2.0f));
-
 	}
 
 	void draw();

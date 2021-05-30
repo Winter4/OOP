@@ -47,5 +47,6 @@ public:
 	// handles the cursor hovering the cell
 	void checkCellHovering(sf::Vector2i cursorPosition);
 	bool chipPhantomActive();
+	void reset();
 };
 

@@ -38,5 +38,6 @@ public:
 	bool filled();
 
 	Player getPlayer();
+	void reset();
 };
 

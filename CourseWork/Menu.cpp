@@ -25,8 +25,6 @@ void Menu::open(TextureOwner& background)
 						exitTale.setColor(sf::Color::White);
 						activeTale = 0;
 					}
-
-
 				break;
 
 			case sf::Event::MouseButtonPressed:

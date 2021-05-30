@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <conio.h>
 
 #include "Background.h"
 #include "Field.h"
@@ -28,6 +29,7 @@ public:
 
 private:
 	void changePlayer();
+	void resetGame();
 
 	void processEvents();
 	void update();

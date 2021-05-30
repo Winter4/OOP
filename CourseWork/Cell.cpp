@@ -48,3 +48,10 @@ bool Cell::filled()
 }
 
 Player Cell::getPlayer() { return player; }
+
+void Cell::reset() 
+{ 
+	isFilled = false; 
+	player = Player::EMPTY;
+	sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
+}

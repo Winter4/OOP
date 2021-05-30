@@ -89,3 +89,10 @@ void Field::checkCellHovering(sf::Vector2i cursorPosition)
 }
 
 bool Field::chipPhantomActive() { return chipPhantom.getState(); }
+
+void Field::reset()
+{
+	for (short i = 0; i < CELLS_NUMBER; i++)
+		for (short j = 0; j < CELLS_NUMBER; j++)
+			cells[i][j].reset();
+}

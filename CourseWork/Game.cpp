@@ -18,7 +18,7 @@ Game::Game()
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
 
 	currentPlayer = PLAYER_1;
-	board.setText("Turn: \nblack.");
+	//board.setText("Turn: \nblack.");
 
 	gameOver = false;
 	window.setFramerateLimit(60);
@@ -40,13 +40,21 @@ void Game::run()
 void Game::changePlayer()
 {
 	if (currentPlayer == Player::PLAYER_1) { 
-		board.setText("Turn: \nwhite.");
+		board.setText("Turn: \nwhite");
 		currentPlayer = Player::PLAYER_2; 
 	}
 	else {
-		board.setText("Turn: \nblack.");
+		board.setText("Turn: \nblack");
 		currentPlayer = Player::PLAYER_1;
 	}
+}
+
+void Game::resetGame()
+{
+	field.reset();
+	gameOver = false;
+	currentPlayer = Player::PLAYER_1;
+	board.setText("Make your move!");
 }
 
 void Game::processEvents()
@@ -86,9 +94,10 @@ void Game::processEvents()
 		}
 		break;
 
-		case sf::Event::KeyPressed:
-			if (event.key.code == sf::Keyboard::Escape)
-				menu.open(background);
+	case sf::Event::KeyPressed:
+		if (event.key.code == sf::Keyboard::Escape)
+			menu.open(background);
+		break;
 	}
 }
 
@@ -102,13 +111,26 @@ void Game::update()
 	}
 
 	if (gameOver) {
+		std::string winner;
+		winner = currentPlayer == Player::PLAYER_1 ? "The white chips won!" :
+			"The black chips won!";
+		winner += "\nPress any key to continue";
+		board.setText(winner);
+
 		render();
+		sf::Event event;
+		while (true) {
+			if (window.pollEvent(event)) {
+				if (event.type == sf::Event::Closed) 
+					window.close();
 
-		system("cls");
-		std::cout << "GAME OVER! \n";
-		system("pause");
+				if (event.type == sf::Event::KeyPressed)
+					break;
+			}
+		}
 
-		window.close();
+		resetGame();
+		menu.open(background);
 	}
 
 	system("cls");
