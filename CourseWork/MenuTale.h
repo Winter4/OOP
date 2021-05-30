@@ -7,17 +7,17 @@ private:
 
 public:
 	MenuTale() {}
-	MenuTale(sf::RenderWindow* window, sf::Vector2f position, sf::Texture* textureToLink, sf::Font& fontToLink, const std::string textToSet) 
+	MenuTale(sf::RenderWindow* window, sf::Vector2f position, sf::Texture* textureToLink, sf::Font& font, const std::string textToSet)
 		: TextureLinker(window, position, textureToLink)
 	{
 		sprite.setTexture(*textureToLink);
 
-		text.setFont(fontToLink);
+		text.setFont(font);
 		text.setCharacterSize(24);
 		text.setString(textToSet);
-		text.setFillColor(sf::Color::Black);
+		text.setFillColor(sf::Color::White);
 
-		//center text
+		// center text
 		sf::FloatRect textRect = text.getLocalBounds();
 		text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 		text.setPosition(sf::Vector2f(sprite.getGlobalBounds().left + sprite.getGlobalBounds().width / 2.0f,

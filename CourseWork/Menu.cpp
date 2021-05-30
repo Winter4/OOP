@@ -15,7 +15,7 @@ void Menu::open(TextureOwner& background)
 					playTale.setColor(sf::Color::Yellow);
 					activeTale = 1;
 				}
-				else 
+				else
 					if (exitTale.getRectangle().contains(sf::Mouse::getPosition(*window))) {
 						exitTale.setColor(sf::Color::Yellow);
 						activeTale = 2;
@@ -25,7 +25,7 @@ void Menu::open(TextureOwner& background)
 						exitTale.setColor(sf::Color::White);
 						activeTale = 0;
 					}
-				
+
 
 				break;
 
@@ -50,13 +50,14 @@ void Menu::open(TextureOwner& background)
 			}
 		}
 
+
 		window->clear();
 
 		background.draw();
-		window->draw(sprite);
+		draw();
 		playTale.draw();
 		exitTale.draw();
-
+		
 		window->display();
 	}
 }

@@ -13,7 +13,7 @@ private:
 
 public:
 	Timer() {}
-	Timer(sf::RenderWindow* window, sf::Font& font);
+	Timer(sf::RenderWindow* window);
 
 	void substractSecond();
 	void refresh();
@@ -21,5 +21,6 @@ public:
 	void restart();
 	short getTime();
 	void draw();
+
 };
 
