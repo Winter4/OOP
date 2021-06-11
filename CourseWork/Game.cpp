@@ -18,7 +18,6 @@ Game::Game()
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
 
 	currentPlayer = PLAYER_1;
-	//board.setText("Turn: \nblack.");
 
 	gameOver = false;
 	window.setFramerateLimit(60);
@@ -147,4 +146,14 @@ void Game::render()
 	board->draw();
 
 	window.display();
+}
+
+Game::~Game()
+{
+	delete background;
+	delete field;
+	delete menu;
+	delete timer;
+	delete board;
+
 }

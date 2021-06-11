@@ -21,6 +21,7 @@ public:
 		playTale = new MenuTale(window, sf::Vector2f(sprite.getPosition().x + 83, sprite.getPosition().y + 125), &talesTexture, fontToSet, "PLAY");
 		exitTale = new MenuTale(window, sf::Vector2f(sprite.getPosition().x + 83, sprite.getPosition().y + 485), &talesTexture, fontToSet, "EXIT");
 	}
+	~Menu();
 
 	void open(TextureOwner* background);
 };

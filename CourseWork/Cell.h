@@ -14,7 +14,6 @@ private:
 	Player player; // if not empty, defines the chip's owner
 
 public:
-	Cell() {}
 	//Cell(sf::RenderWindow* window, sf::Texture* chipsTexture, sf::Vector2f fieldPosition, sf::Vector2i index);
 	Cell(sf::RenderWindow* window, sf::Vector2f position, sf::Texture* chipsTexture, sf::Vector2i indexToSet)
 		: TextureLinker(window, position, chipsTexture)

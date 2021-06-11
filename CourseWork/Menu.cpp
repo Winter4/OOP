@@ -59,3 +59,9 @@ void Menu::open(TextureOwner* background)
 		window->display();
 	}
 }
+
+Menu::~Menu()
+{
+	delete playTale;
+	delete exitTale;
+}

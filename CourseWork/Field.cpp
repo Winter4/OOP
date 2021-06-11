@@ -1,5 +1,15 @@
 #include "Field.h"
 
+Field::~Field()
+{
+	for (int i = 0; i < CELLS_NUMBER; i++) {
+		for (int j = 0; j < CELLS_NUMBER; j++)
+			delete cells[i][j];
+		delete[] cells[i];
+	}
+	delete[] cells;
+}
+
 bool Field::checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector2i line)
 {
 	// counts the number of straight-going chips
@@ -8,8 +18,9 @@ bool Field::checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector
 	for (short i = 0, count = 0, direction = -1; straightCount != 5 and count < 9; i += direction, count++) {
 
 		if (currentCell.x + i < 0 or currentCell.x + i > 14) continue;
+		// the bottom line has some bug
 
-		if (cells[currentCell.y + i * line.y][currentCell.x + i * line.x].getPlayer() == currentPlayer)
+		if (cells[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == currentPlayer)
 			straightCount++;
 		else {
 			if (direction == 1) break;
@@ -25,7 +36,7 @@ bool Field::checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector
 bool Field::setChip(Player currentPlayer)
 {
 	sf::Vector2i currentCell = chipPhantom.getCell();
-	cells[currentCell.y][currentCell.x].setChip(currentPlayer);
+	cells[currentCell.y][currentCell.x]->setChip(currentPlayer);
 	chipPhantom.setState(false);
 
 	// win check
@@ -44,12 +55,12 @@ void Field::draw()
 	// draw all the cells (i.e. chips)
 	for (size_t i = 0; i < CELLS_NUMBER; i++)
 		for (size_t j = 0; j < CELLS_NUMBER; j++)
-			window->draw(cells[i][j].getSprite());
+			window->draw(cells[i][j]->getSprite());
 
 	chipPhantom.draw();
 }
 
-sf::Vector2f Field::getCellPosition(sf::Vector2i index) { return cells[index.y][index.x].getPosition(); }
+sf::Vector2f Field::getCellPosition(sf::Vector2i index) { return cells[index.y][index.x]->getPosition(); }
 
 sf::Vector2f Field::getPosition() { return sprite.getPosition(); }
 
@@ -71,12 +82,12 @@ void Field::checkCellHovering(sf::Vector2i cursorPosition)
 			if (allegedCell.y + j < 0 or allegedCell.y + j > 14) continue;
 
 			// checking 
-			if (cells[allegedCell.y + j][allegedCell.x + i].isCursorHovering(cursorPosition)) {
+			if (cells[allegedCell.y + j][allegedCell.x + i]->isCursorHovering(cursorPosition)) {
 				// updating last hovered cell
 				chipPhantom.setCell(sf::Vector2i(allegedCell.x + i, allegedCell.y + j));
-				chipPhantom.setPosition(cells[allegedCell.y + j][allegedCell.x + i].getPosition());
+				chipPhantom.setPosition(cells[allegedCell.y + j][allegedCell.x + i]->getPosition());
 
-				if (!cells[allegedCell.y + j][allegedCell.x + i].filled())
+				if (!cells[allegedCell.y + j][allegedCell.x + i]->filled())
 					chipPhantom.setState(true);
 
 				return;
@@ -94,5 +105,5 @@ void Field::reset()
 {
 	for (short i = 0; i < CELLS_NUMBER; i++)
 		for (short j = 0; j < CELLS_NUMBER; j++)
-			cells[i][j].reset();
+			cells[i][j]->reset();
 }

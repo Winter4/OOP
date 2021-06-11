@@ -5,7 +5,7 @@
 
 class Field : public TextureOwner {
 private:
-	Cell cells[CELLS_NUMBER][CELLS_NUMBER]; // cells collection
+	Cell*** cells; // cells collection
 	sf::Texture chipsTexture; // texture for the chips (2 sprites inside)
 
 	// the phantom of the chip: shows, whether the chip can be set
@@ -19,7 +19,12 @@ public:
 		chipPhantom(window, sf::Vector2f(0,0), "greenCross.png")
 	{
 		// loading chips texture
-		if (!chipsTexture.loadFromFile("chips.png")) throw std::exception("Texture init error.");
+		if (!chipsTexture.loadFromFile("chips2.png")) throw std::exception("Texture init error.");
+
+		// cells memory allocating
+		cells = new Cell** [CELLS_NUMBER];
+		for (int i = 0; i < CELLS_NUMBER; i++)
+			cells[i] = new Cell * [CELLS_NUMBER];
 
 		sf::Vector2f fieldPosition = sprite.getPosition();
 		for (size_t i = 0; i < CELLS_NUMBER; i++)
@@ -31,9 +36,11 @@ public:
 				float y = fieldPosition.y + 54 + i * 54;
 
 				// setting every cell's pos, index and fillnes (empty)
-				cells[i][j] = Cell(window, sf::Vector2f(x, y), &chipsTexture, sf::Vector2i(i, j));
+				cells[i][j] = new Cell(window, sf::Vector2f(x, y), &chipsTexture, sf::Vector2i(i, j));
 			}
 	}
+
+	~Field();
 
 	// draw a field with all the cells
 	void draw(); 
