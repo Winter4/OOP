@@ -3,16 +3,14 @@
 
 class Board : public TextureOwner {
 private:
-	sf::Font font;
 	sf::Text text;
 
 public:
 	Board() {}
-	Board(sf::RenderWindow* window, sf::Vector2f position, std::string textureFileName)
+	Board(sf::RenderWindow* window, sf::Vector2f position, std::string textureFileName, sf::Font* fontToSet)
 		: TextureOwner(window, position, textureFileName)
 	{
-		if (not font.loadFromFile("gilroy.ttf")) throw std::runtime_error("Error while board text loading.");
-		text.setFont(font);
+		text.setFont(*fontToSet);
 
 		text.setCharacterSize(30);
 		text.setFillColor(sf::Color::White);

@@ -7,12 +7,12 @@ private:
 
 public:
 	MenuTale() {}
-	MenuTale(sf::RenderWindow* window, sf::Vector2f position, sf::Texture* textureToLink, sf::Font& font, const std::string textToSet)
+	MenuTale(sf::RenderWindow* window, sf::Vector2f position, sf::Texture* textureToLink, sf::Font* fontToSet, const std::string textToSet)
 		: TextureLinker(window, position, textureToLink)
 	{
 		sprite.setTexture(*textureToLink);
 
-		text.setFont(font);
+		text.setFont(*fontToSet);
 		text.setCharacterSize(24);
 		text.setString(textToSet);
 		text.setFillColor(sf::Color::White);

@@ -1,13 +1,12 @@
 #include "Timer.h"
 
-Timer::Timer(sf::RenderWindow* window)
+Timer::Timer(sf::RenderWindow* window, sf::Font* fontToSet)
 {
 	this->window = window;
-	if (not font.loadFromFile("gilroy.ttf")) throw std::runtime_error("Error while timer font loading.");
 
 	text.setPosition(sf::Vector2f(1100, 200));
 	text.setFillColor(sf::Color::Black);
-	text.setFont(font);
+	text.setFont(*fontToSet);
 	text.setCharacterSize(72);
 
 	time = 60;

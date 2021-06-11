@@ -1,20 +1,20 @@
 #include "Game.h"
 
 Game::Game()
-// the window is 1400x900 rect (the w-h values were chosen with hit-or-miss method)
-	: window(sf::VideoMode(1400, 900), "Rendzu!"),
-	// the background picture is the same size with the window; takes its beginning in the up left corner
-	background(&window, sf::Vector2f(0, 0), "background.png"),
-	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
-	field(&window, sf::Vector2f(50, 20), "field2.png"),
-	menu(&window, sf::Vector2f(100,100),  "menu.png"),
-	timer(&window),
-	board(&window, sf::Vector2f(960, 485), "board.png")
+	// the window is 1400x900 rect (the w-h values were chosen with hit-or-miss method)
+	: window(sf::VideoMode(1400, 900), "Rendzu!")
 { 
+	if (not gilroy.loadFromFile("gilroy.ttf")) throw std::runtime_error("Error while tale font loading.");
 	
-	//board = Board(&window, sf::Vector2f(960, 485), "board.png", font);
+	// the background picture is the same size with the window; takes its beginning in the up left corner
+	background = new Background(&window, sf::Vector2f(0, 0), "background.png");
+	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
+	field = new Field(&window, sf::Vector2f(50, 20), "field2.png");
+	menu = new Menu(&window, sf::Vector2f(100, 100), "menu.png", &gilroy);
+	timer = new Timer(&window, &gilroy);
+	board = new Board(&window, sf::Vector2f(960, 485), "board.png", &gilroy);
 
-	sf::FloatRect fieldRect = field.getRectangle();
+	sf::FloatRect fieldRect = field->getRectangle();
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
 
 	currentPlayer = PLAYER_1;
@@ -26,9 +26,9 @@ Game::Game()
 
 void Game::run()
 {
-	menu.open(background);
+	menu->open(background);
 
-	timer.restart();
+	timer->restart();
 	// main loop
 	while (window.isOpen()) {
 		processEvents();
@@ -40,21 +40,21 @@ void Game::run()
 void Game::changePlayer()
 {
 	if (currentPlayer == Player::PLAYER_1) { 
-		board.setText("Turn: \nwhite");
+		board->setText("Turn: \nwhite");
 		currentPlayer = Player::PLAYER_2; 
 	}
 	else {
-		board.setText("Turn: \nblack");
+		board->setText("Turn: \nblack");
 		currentPlayer = Player::PLAYER_1;
 	}
 }
 
 void Game::resetGame()
 {
-	field.reset();
+	field->reset();
 	gameOver = false;
 	currentPlayer = Player::PLAYER_1;
-	board.setText("Make your move!");
+	board->setText("Make your move!");
 }
 
 void Game::processEvents()
@@ -77,37 +77,37 @@ void Game::processEvents()
 
 	case sf::Event::MouseMoved: 
 		// if the cursor is hovering the field
-		if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) 
-			field.checkCellHovering(cursorPosition);
+		if (field->getRectangle().contains(sf::Vector2f(cursorPosition))) 
+			field->checkCellHovering(cursorPosition);
 		
 		break;
 		
 	case sf::Event::MouseButtonPressed:
 		// if click, try to set the chip
 		if (event.key.code == sf::Mouse::Left) {
-			if (field.getRectangle().contains(sf::Vector2f(cursorPosition))) 
-				if (field.chipPhantomActive()) {
-					gameOver = field.setChip(currentPlayer);
+			if (field->getRectangle().contains(sf::Vector2f(cursorPosition))) 
+				if (field->chipPhantomActive()) {
+					gameOver = field->setChip(currentPlayer);
 					changePlayer();
-					timer.refresh();
+					timer->refresh();
 				}
 		}
 		break;
 
 	case sf::Event::KeyPressed:
 		if (event.key.code == sf::Keyboard::Escape)
-			menu.open(background);
+			menu->open(background);
 		break;
 	}
 }
 
 void Game::update()
 {
-	if (timer.getTime() <= 0) gameOver = true;
+	if (timer->getTime() <= 0) gameOver = true;
 
-	if (timer.getElapsedTime() >= sf::seconds(1)) {
-		timer.substractSecond();
-		timer.restart();
+	if (timer->getElapsedTime() >= sf::seconds(1)) {
+		timer->substractSecond();
+		timer->restart();
 	}
 
 	if (gameOver) {
@@ -115,7 +115,7 @@ void Game::update()
 		winner = currentPlayer == Player::PLAYER_1 ? "The white chips won!" :
 			"The black chips won!";
 		winner += "\nPress any key to continue";
-		board.setText(winner);
+		board->setText(winner);
 
 		render();
 		sf::Event event;
@@ -130,7 +130,7 @@ void Game::update()
 		}
 
 		resetGame();
-		menu.open(background);
+		menu->open(background);
 	}
 
 	system("cls");
@@ -141,10 +141,10 @@ void Game::render()
 {
 	window.clear();
 
-	background.draw();
-	field.draw();
-	timer.draw();
-	board.draw();
+	background->draw();
+	field->draw();
+	timer->draw();
+	board->draw();
 
 	window.display();
 }

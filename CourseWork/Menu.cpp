@@ -1,6 +1,6 @@
 #include "Menu.h"
 
-void Menu::open(TextureOwner& background)
+void Menu::open(TextureOwner* background)
 {
 	while (window->isOpen()) {
 		sf::Event event;
@@ -11,18 +11,18 @@ void Menu::open(TextureOwner& background)
 				break;
 
 			case sf::Event::MouseMoved:
-				if (playTale.getRectangle().contains(sf::Mouse::getPosition(*window))) {
-					playTale.setColor(sf::Color::Yellow);
+				if (playTale->getRectangle().contains(sf::Mouse::getPosition(*window))) {
+					playTale->setColor(sf::Color::Yellow);
 					activeTale = 1;
 				}
 				else
-					if (exitTale.getRectangle().contains(sf::Mouse::getPosition(*window))) {
-						exitTale.setColor(sf::Color::Yellow);
+					if (exitTale->getRectangle().contains(sf::Mouse::getPosition(*window))) {
+						exitTale->setColor(sf::Color::Yellow);
 						activeTale = 2;
 					}
 					else {
-						playTale.setColor(sf::Color::White);
-						exitTale.setColor(sf::Color::White);
+						playTale->setColor(sf::Color::White);
+						exitTale->setColor(sf::Color::White);
 						activeTale = 0;
 					}
 				break;
@@ -51,10 +51,10 @@ void Menu::open(TextureOwner& background)
 
 		window->clear();
 
-		background.draw();
+		background->draw();
 		draw();
-		playTale.draw();
-		exitTale.draw();
+		playTale->draw();
+		exitTale->draw();
 		
 		window->display();
 	}

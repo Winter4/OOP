@@ -12,14 +12,15 @@
 class Game {
 private:
 	sf::RenderWindow window; // main  window
-	Background background; 
-	Field field;
+	Background* background; 
+	Field* field;
 
-	Menu menu;
-	Timer timer;
+	Menu* menu;
+	Timer* timer;
 
-	Board board;
+	Board* board;
 	
+	sf::Font gilroy;
 	bool gameOver;
 	Player currentPlayer;
 
