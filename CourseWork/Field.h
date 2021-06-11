@@ -19,7 +19,7 @@ public:
 		chipPhantom(window, sf::Vector2f(0,0), "greenCross.png")
 	{
 		// loading chips texture
-		if (!chipsTexture.loadFromFile("chips2.png")) throw std::exception("Texture init error.");
+		if (!chipsTexture.loadFromFile("chips.png")) throw std::exception("Texture init error.");
 
 		// cells memory allocating
 		cells = new Cell** [CELLS_NUMBER];
