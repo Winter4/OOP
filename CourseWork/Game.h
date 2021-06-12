@@ -8,6 +8,7 @@
 #include "Menu.h"
 #include "Timer.h"
 #include "Board.h"
+#include "Bot.h"
 
 class Game {
 private:
@@ -20,6 +21,8 @@ private:
 
 	Board* board;
 	
+	Bot* bot;
+
 	sf::Font gilroy;
 	bool gameOver;
 	Player currentPlayer;
@@ -38,4 +41,6 @@ private:
 	void render();
 };
 
+// TODO: bottom line bug 
+// TODO: timer ending bug
 

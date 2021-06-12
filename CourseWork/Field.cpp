@@ -17,8 +17,8 @@ bool Field::checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector
 
 	for (short i = 0, count = 0, direction = -1; straightCount != 5 and count < 9; i += direction, count++) {
 
-		if (currentCell.x + i < 0 or currentCell.x + i > 14) continue;
-		// the bottom line has some bug
+		if (currentCell.x + i * line.x < 0 or currentCell.x + i * line.x > 14) continue;
+		if (currentCell.y + i  * line.y < 0 or currentCell.y + i * line.y > 14) continue;
 
 		if (cells[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == currentPlayer)
 			straightCount++;
@@ -48,6 +48,17 @@ bool Field::setChip(Player currentPlayer)
 		or checkLine(currentPlayer, currentCell, { 1,-1 }); // alt diag
 }
 
+bool Field::setChip(Player currentPlayer, sf::Vector2i cell)
+{
+	cells[cell.y][cell.x]->setChip(currentPlayer);
+
+	return
+		checkLine(currentPlayer, cell, { 1,0 })		// horiznotal
+		or checkLine(currentPlayer, cell, { 0,1 })	// vertical
+		or checkLine(currentPlayer, cell, { 1,1 })	// main diag
+		or checkLine(currentPlayer, cell, { 1,-1 }); // alt diag
+}
+
 void Field::draw()
 {
 	TextureOwner::draw(); // draw a field picture
@@ -67,6 +78,8 @@ sf::Vector2f Field::getPosition() { return sprite.getPosition(); }
 sf::IntRect Field::getSize() { return sprite.getTextureRect(); }
 
 sf::FloatRect Field::getRectangle() { return sprite.getGlobalBounds(); }
+
+Cell*** Field::getCellsRef() { return cells; }
 
 void Field::checkCellHovering(sf::Vector2i cursorPosition)
 {

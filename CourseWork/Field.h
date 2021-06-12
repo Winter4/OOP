@@ -46,11 +46,13 @@ public:
 	void draw(); 
 	// set chip to the pointed position with a cur player's chip
 	bool setChip(Player currentPlayer);
+	bool setChip(Player currentPlayer, sf::Vector2i cell);
 	// get the pointed cell position
 	sf::Vector2f getCellPosition(sf::Vector2i index);
 	sf::Vector2f getPosition();
 	sf::IntRect getSize();
 	sf::FloatRect getRectangle();
+	Cell*** getCellsRef();
 	// handles the cursor hovering the cell
 	void checkCellHovering(sf::Vector2i cursorPosition);
 	bool chipPhantomActive();

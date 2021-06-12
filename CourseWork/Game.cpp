@@ -13,6 +13,7 @@ Game::Game()
 	menu = new Menu(&window, sf::Vector2f(100, 100), "menu.png", &gilroy);
 	timer = new Timer(&window, &gilroy);
 	board = new Board(&window, sf::Vector2f(960, 485), "board.png", &gilroy);
+	bot = new Bot(field->getCellsRef());
 
 	sf::FloatRect fieldRect = field->getRectangle();
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
@@ -131,7 +132,13 @@ void Game::update()
 		resetGame();
 		menu->open(background);
 	}
-
+	
+	if (currentPlayer == bot->getPlayer()) {
+		gameOver = field->setChip(currentPlayer, bot->makeMove());
+		changePlayer();
+		timer->refresh();
+	}
+	
 	system("cls");
 	std::cout << gameOver;
 }
