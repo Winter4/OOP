@@ -21,11 +21,12 @@ Bot::Bot(Cell*** cellsLink)
 
 short Bot::checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vector2i line)
 {
-	short power = 0;
+	Player antiSubPlayer = subPlayer == Player::PLAYER_1 ? Player::PLAYER_2 : Player::PLAYER_1;
+	short power = 1;
 	short potential = 0;
-	short attackPlace = 0;
+	short attackPlace = 1;
 	
-	for (short i = 0, direction = -1; ; i += direction) {
+	for (short i = -1, direction = -1; ; i += direction) {
 		if (currentCell.x + i * line.x < 0 or currentCell.x + i * line.x > 14) 
 			if (direction == 1) break;
 			else {
@@ -41,13 +42,12 @@ short Bot::checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vecto
 		
 		// checking main attack
 		if (cellsRef[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == subPlayer) {
-
 			power++;
 			attackPlace++;
 		}
 		else {
 			// attack is locked
-			if (cellsRef[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == Player::PLAYER_1) {
+			if (cellsRef[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == antiSubPlayer) {
 				direction = 1;
 				i = 0;
 			}
@@ -65,7 +65,7 @@ short Bot::checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vecto
 
 					if (cellsRef[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == Player::EMPTY)
 						attackPlace++;
-					else if (cellsRef[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == Player::PLAYER_2)
+					else if (cellsRef[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == subPlayer)
 						if (direction != 1) {
 							direction = 1;
 							i = 0;
