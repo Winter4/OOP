@@ -7,16 +7,16 @@ Bot::Bot(Cell*** cellsLink)
 
 	// [power][potential] weight
 	attacksWeights[0][0] = 0.1;  // 1 1
-	attacksWeights[1][0] = 2;	// 2 1
-	attacksWeights[2][0] = 4;	// 3 1
-	attacksWeights[3][0] = 6;	// 4 1
+	attacksWeights[1][0] = 2;	 // 2 1
+	attacksWeights[2][0] = 4;	 // 3 1
+	attacksWeights[3][0] = 6;	 // 4 1
 	attacksWeights[4][0] = 200;  // 5 1
 
 	attacksWeights[0][1] = 0.25; // 1 2
-	attacksWeights[1][1] = 5;	// 2 2
-	attacksWeights[2][1] = 7;	// 3 2
-	attacksWeights[3][1] = 100;	// 4 2
-	attacksWeights[4][1] = 200;	// 5 2
+	attacksWeights[1][1] = 5;	 // 2 2
+	attacksWeights[2][1] = 7;	 // 3 2
+	attacksWeights[3][1] = 100;	 // 4 2
+	attacksWeights[4][1] = 200;	 // 5 2
 }
 
 short Bot::checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vector2i line)
@@ -89,22 +89,29 @@ std::pair<short, sf::Vector2i> Bot::checkAttacks(Player subPlayer, sf::Vector2i 
 	short maxWeight = 0;
 	sf::Vector2i cellToMove;
 	
+	short weight = 0;
 
-	if (checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, 0)) > maxWeight) {
-		maxWeight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, 0));
+	weight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, 0));
+	if (weight > maxWeight) {
+		maxWeight = weight;
 		cellToMove = cellToCheck;
 	}
 	
-	if (checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(0, 1)) > maxWeight) {
-		maxWeight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(0, 1));
+	weight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(0, 1));
+	if (weight > maxWeight) {
+		maxWeight = weight;
 		cellToMove = cellToCheck;
 	}
-	if (checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, 1)) > maxWeight) {
-		maxWeight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, 1));
+
+	weight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, 1));
+	if (weight > maxWeight) {
+		maxWeight = weight;
 		cellToMove = cellToCheck;
 	}
-	if (checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, -1)) > maxWeight) {
-		maxWeight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, -1));
+
+	weight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, -1));
+	if (weight > maxWeight) {
+		maxWeight = weight;
 		cellToMove = cellToCheck;
 	}
 
@@ -121,18 +128,28 @@ sf::Vector2i Bot::makeMove()
 			
 			if (cellsRef[i][j]->getPlayer() == Player::EMPTY) {
 				
-				if (checkAttacks(Player::PLAYER_2, sf::Vector2i(i, j)).first > maxWeight) {
-					maxWeight = checkAttacks(Player::PLAYER_2, sf::Vector2i(i, j)).first;
-					cellToMove = checkAttacks(Player::PLAYER_2, sf::Vector2i(i, j)).second;
+				std::pair<short, sf::Vector2i> analise;
+
+				analise = checkAttacks(Player::PLAYER_2, sf::Vector2i(i, j));
+
+				if (analise.first > maxWeight) {
+					maxWeight = analise.first;
+					cellToMove = analise.second;
 				}
-				std::cout << "\n TEST";
-				if (checkAttacks(Player::PLAYER_1, sf::Vector2i(i, j)).first > maxWeight) {
-					maxWeight = checkAttacks(Player::PLAYER_1, sf::Vector2i(i, j)).first;
-					cellToMove = checkAttacks(Player::PLAYER_1, sf::Vector2i(i, j)).second;
+				
+				analise = checkAttacks(Player::PLAYER_1, sf::Vector2i(i, j));
+				if (analise.first > maxWeight) {
+					maxWeight = analise.first;
+					cellToMove = analise.second;
 				}
 			}
+
+			std::cout << i + 1 << " " << j + 1 << " | " << maxWeight 
+				<< " | " << cellToMove.y + 1 << " " << cellToMove.x + 1 << std::endl;
 		}
 
+	std::cout << std::endl << std::endl << maxWeight << "  " << cellToMove.y << " " << cellToMove.x << std::endl;
+	system("pause");
 	return cellToMove;
 }
 
