@@ -54,6 +54,7 @@ void Game::resetGame()
 	field->reset();
 	gameOver = false;
 	currentPlayer = Player::PLAYER_1;
+	timer->refresh();
 	board->setText("Make your move!");
 }
 
@@ -79,7 +80,6 @@ void Game::processEvents()
 		// if the cursor is hovering the field
 		if (field->getRectangle().contains(sf::Vector2f(cursorPosition))) 
 			field->checkCellHovering(cursorPosition);
-		
 		break;
 		
 	case sf::Event::MouseButtonPressed:
