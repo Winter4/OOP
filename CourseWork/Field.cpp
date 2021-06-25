@@ -66,7 +66,7 @@ void Field::draw()
 	// draw all the cells (i.e. chips)
 	for (size_t i = 0; i < CELLS_NUMBER; i++)
 		for (size_t j = 0; j < CELLS_NUMBER; j++)
-			window->draw(cells[i][j]->getSprite());
+			cells[i][j]->draw();
 
 	chipPhantom.draw();
 }

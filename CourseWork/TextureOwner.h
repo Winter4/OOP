@@ -14,5 +14,7 @@ public:
 		// setting the texture
 		sprite.setTexture(texture);
 	}
+
+	void draw();
 };
 

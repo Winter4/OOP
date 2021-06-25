@@ -1,10 +1,5 @@
 #include "Cell.h"
 
-sf::Sprite& Cell::getSprite() 
-{
-	return sprite;
-}
-
 void Cell::setChip(Player newPlayer)
 {
 	// the texture is 90x45 png, so there are two squares 45x45
@@ -54,4 +49,10 @@ void Cell::reset()
 	isFilled = false; 
 	player = Player::EMPTY;
 	sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
+}
+
+void Cell::draw()
+{
+	if (player != Player::EMPTY)
+		TextureLinker::draw();
 }

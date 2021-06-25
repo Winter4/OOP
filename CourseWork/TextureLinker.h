@@ -12,5 +12,7 @@ public:
 	{
 		texture = textureToLink;
 	}
+
+	void draw();
 };
 

@@ -11,8 +11,6 @@ private:
 	// the phantom of the chip: shows, whether the chip can be set
 	ChipPhantom chipPhantom; 
 
-	bool checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector2i checkDirection);
-
 public:
 	Field(sf::RenderWindow* window, sf::Vector2f position, std::string textureFileName)
 		: TextureOwner(window, position, textureFileName),
@@ -57,5 +55,8 @@ public:
 	void checkCellHovering(sf::Vector2i cursorPosition);
 	bool chipPhantomActive();
 	void reset();
+
+private:
+	bool checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector2i checkDirection);
 };
 
