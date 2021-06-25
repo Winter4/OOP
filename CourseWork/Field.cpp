@@ -17,8 +17,15 @@ bool Field::checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector
 
 	for (short i = 0, count = 0, direction = -1; straightCount != 5 and count < 9; i += direction, count++) {
 
-		if (currentCell.x + i * line.x < 0 or currentCell.x + i * line.x > 14) continue;
-		if (currentCell.y + i  * line.y < 0 or currentCell.y + i * line.y > 14) continue;
+		//if (currentCell.x + i * line.x < 0 or currentCell.x + i * line.x > 14) continue;
+		//if (currentCell.y + i  * line.y < 0 or currentCell.y + i * line.y > 14) continue;
+		if (currentCell.x + i * line.x < 0 or currentCell.y + i * line.y < 0) {
+			direction = 1;
+			i = 0;
+			continue;
+		}
+		if (currentCell.x + i * line.x > 14 or currentCell.y + i * line.y > 14)
+			break;
 
 		if (cells[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == currentPlayer)
 			straightCount++;
@@ -30,6 +37,8 @@ bool Field::checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector
 		}
 	}
 
+	//std::cout << "Line " << line.y << " " << line.x << ": " << straightCount << std::endl;
+	//if (currentPlayer == Player::PLAYER_2) system("pause");
 	return straightCount == 5;
 }
 
@@ -53,10 +62,10 @@ bool Field::setChip(Player currentPlayer, sf::Vector2i cell)
 	cells[cell.y][cell.x]->setChip(currentPlayer);
 
 	return
-		checkLine(currentPlayer, cell, { 1,0 })		// horiznotal
-		or checkLine(currentPlayer, cell, { 0,1 })	// vertical
+		checkLine(currentPlayer, cell, { 0,1 })		// horiznotal
+		or checkLine(currentPlayer, cell, { 1, 0 })	// vertical
 		or checkLine(currentPlayer, cell, { 1,1 })	// main diag
-		or checkLine(currentPlayer, cell, { 1,-1 }); // alt diag
+		or checkLine(currentPlayer, cell, { -1,1 }); // alt diag
 }
 
 void Field::draw()

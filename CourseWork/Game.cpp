@@ -110,6 +110,13 @@ void Game::update()
 		timer->restart();
 	}
 
+	
+	if (currentPlayer == bot->getPlayer()) {
+		gameOver = field->setChip(currentPlayer, bot->makeMove());
+		changePlayer();
+		timer->refresh();
+	}
+
 	if (gameOver) {
 		std::string winner;
 		winner = currentPlayer == Player::PLAYER_1 ? "The white chips won!" :
@@ -121,7 +128,7 @@ void Game::update()
 		sf::Event event;
 		while (true) {
 			if (window.pollEvent(event)) {
-				if (event.type == sf::Event::Closed) 
+				if (event.type == sf::Event::Closed)
 					window.close();
 
 				if (event.type == sf::Event::KeyPressed)
@@ -132,13 +139,7 @@ void Game::update()
 		resetGame();
 		menu->open(background);
 	}
-	
-	if (currentPlayer == bot->getPlayer()) {
-		gameOver = field->setChip(currentPlayer, bot->makeMove());
-		changePlayer();
-		timer->refresh();
-	}
-	
+
 	system("cls");
 	std::cout << gameOver;
 }
