@@ -5,6 +5,7 @@ Bot::Bot(Cell*** cellsLink)
 	cellsRef = cellsLink;
 	player = Player::PLAYER_2;
 
+	// веса атак
 	// [power][potential] weight
 	attacksWeights[0][0] = 0.1;  // 1 1
 	attacksWeights[1][0] = 2;	 // 2 1
@@ -21,31 +22,42 @@ Bot::Bot(Cell*** cellsLink)
 
 float Bot::checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vector2i line)
 {
+	// противник бота
 	Player antiSubPlayer = subPlayer == Player::PLAYER_1 ? Player::PLAYER_2 : Player::PLAYER_1;
+
+	// на старте мощност 1, потенциал 0, место для атаки - 1 ячейка
 	short power = 1;
 	short potential = 0;
 	short attackPlace = 1;
 	
+	// для выхода из цикла
 	bool flag = true;
 	for (short i = -1, direction = -1; flag; i += direction) {
+		// проверка на выход за поле
 		// in-board check
 		if (currentCell.x + i * line.x < 0 or currentCell.x + i * line.x > 14
 			or currentCell.y + i * line.y < 0 or currentCell.y + i * line.y > 14) 
 		{
+			// условно идём сначала влево (если по горизонтали), потом вправо
+
+			// если вышли за поле справа - заканчиваем проверку атаки
 			if (direction == 1) break;
 			else {
+				// если слева, начинаем идти вправо
 				direction = 1;
 				i = 0;
 				continue;
 			}
 		}
 		
+		// проверка атаки
 		// checking main attack
 		if (cellsRef[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == subPlayer) {
 			power++;
 			attackPlace++;
 		}
 		else {
+			// если встретили фишку оппонента
 			// attack is locked
 			if (cellsRef[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == antiSubPlayer) {
 				if (direction == 1) break;
@@ -55,14 +67,17 @@ float Bot::checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vecto
 					continue;
 				}
 			}
+			// если встретили пустую ячейку, смотрим, сколько есть места для атаки
 			// free place for attack continuing
 			else {
 				potential++;
 				attackPlace++;
 
+				// смотрим место, пока не достигнем пяти
 				// checking free place for the amount of free place
 				for (short j = i + direction; attackPlace < 5; j += direction, i = j) {
 
+					// проверка за границы поля
 					// in-board check
 					if (currentCell.x + j * line.x < 0 or currentCell.x + j * line.x > 14
 						or currentCell.y + j * line.y < 0 or currentCell.y + j * line.y > 14)
@@ -70,13 +85,16 @@ float Bot::checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vecto
 						break;
 					}
 
+					// если пустая, считаем
 					// if the cell is empty
 					if (cellsRef[currentCell.y + j * line.y][currentCell.x + j * line.x]->getPlayer() == Player::EMPTY)
 						attackPlace++;
 					else {
+						// если наша фишка, тоже считаем
 						if (cellsRef[currentCell.y + j * line.y][currentCell.x + j * line.x]->getPlayer() == subPlayer)
 							attackPlace++;
 						else 
+							// если оппонента, выходим
 							break;
 					}
 				}
@@ -89,6 +107,7 @@ float Bot::checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vecto
 		}
 	}
 
+	// нехватка места для атаки
 	if (attackPlace < 5) return 0;
 	if (power < 5 and potential == 0) return 0;
 
@@ -103,7 +122,8 @@ std::pair<float, sf::Vector2i> Bot::checkAttacks(Player subPlayer, sf::Vector2i 
 	sf::Vector2i cellToMove;
 	
 	float weight = 0;
-
+	
+	// смотрим все атаки, ищем самую ценную
 	weight = checkLineAttack(subPlayer, cellToCheck, sf::Vector2i(1, 0));
 	if (weight > maxWeight) {
 		maxWeight = weight;
@@ -137,9 +157,11 @@ sf::Vector2i Bot::makeMove()
 	sf::Vector2i cellToMove;
 	//std::cout << "TEST" << std::endl;
 
+	// перебор матрицы
 	for (short i = 0; i < CELLS_NUMBER; i++) 
 		for (short j = 0; j < CELLS_NUMBER; j++) {
 			
+			// если пустая ячейка, подставляем сначаоа нашу, потом фишку оппонента
 			if (cellsRef[i][j]->getPlayer() == Player::EMPTY) {
 				
 				std::pair<float, sf::Vector2i> analise;
