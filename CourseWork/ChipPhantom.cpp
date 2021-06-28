@@ -1,6 +1,14 @@
 #include "ChipPhantom.h"
 
-ChipPhantom::ChipPhantom() {}
+ChipPhantom::ChipPhantom(sf::RenderWindow* window, sf::Vector2f position, std::string textureFileName) 
+	: TextureOwner(window, position, textureFileName)
+{
+	state = true;
+	index = sf::Vector2i(7, 7);
+
+	// 22.5 - width / 2
+	sprite.setOrigin(sf::Vector2f(22.5, 22.5));
+}
 
 void ChipPhantom::draw()
 {
@@ -14,6 +22,7 @@ void ChipPhantom::setPosition(sf::Vector2f positionToSet)
 
 void ChipPhantom::setCell(sf::Vector2i indexToSet)
 {
+	// in-board check
 	if (indexToSet.x >= 0 and indexToSet.x < CELLS_NUMBER and
 		indexToSet.y >= 0 and indexToSet.y < CELLS_NUMBER) {
 

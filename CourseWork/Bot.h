@@ -3,25 +3,24 @@
 
 class Bot {
 private:
-	// ссылка на матрицу ячеек
+	// cells matrix ref
 	Cell*** cellsRef;
-	// массив весов атак
+	// attack weights array
 	float attacksWeights[5][2];
-	// игрок, за которого играет бот
+	// bot player
 	Player player;
 
 public:
 	Bot(Cell*** cellsLink);
 
-	// просчитать ход бота
+	// calc the most profit move
 	sf::Vector2i makeMove();
-	// геттер игрока бота
 	Player getPlayer();
 
 private:
-	// проверить атаку по данной линии, содержащей данную клетку
+	// check the line attack, containing the cell
 	float checkLineAttack(Player subPlayer, sf::Vector2i currentCell, sf::Vector2i direction);
-	// проверить все атаки клетки
+	// check all the cell's attacks
 	std::pair<float, sf::Vector2i> checkAttacks(Player subPlayer, sf::Vector2i cellToCheck);
 };
 

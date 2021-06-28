@@ -9,7 +9,7 @@ Timer::Timer(sf::RenderWindow* window, sf::Font* fontToSet)
 	text.setFont(*fontToSet);
 	text.setCharacterSize(72);
 
-	time = 60;
+	refresh();
 }
 
 void Timer::substractSecond()

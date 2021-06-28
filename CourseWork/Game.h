@@ -12,7 +12,7 @@
 
 class Game {
 private:
-	sf::RenderWindow window; // main  window
+	sf::RenderWindow window; // main window
 	Background* background; 
 	Field* field;
 
@@ -41,6 +41,4 @@ private:
 	void render();
 };
 
-// TODO: bottom line bug 
-// TODO: timer ending bug
 

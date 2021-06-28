@@ -4,20 +4,26 @@ Game::Game()
 	// the window is 1400x900 rect (the w-h values were chosen with hit-or-miss method)
 	: window(sf::VideoMode(1400, 900), "Rendzu!")
 { 
+	// font loading
 	if (not gilroy.loadFromFile("gilroy.ttf")) throw std::runtime_error("Error while tale font loading.");
 	
 	// the background picture is the same size with the window; takes its beginning in the up left corner
 	background = new Background(&window, sf::Vector2f(0, 0), "background.png");
-	// the field is 860x860 square; tales its beginning in the (50; 20) vector from the up left corner (0; 0)
+	// the field is 860x860 square; takes its beginning in the (50; 20) vector from the up left corner (0; 0)
 	field = new Field(&window, sf::Vector2f(50, 20), "field.png");
+	// same to upper; the text in the menu has the gilroy font
 	menu = new Menu(&window, sf::Vector2f(100, 100), "menu.png", &gilroy);
+	// same to upper
 	timer = new Timer(&window, &gilroy);
+	// same to upper
 	board = new Board(&window, sf::Vector2f(960, 485), "board.png", &gilroy);
+	// just pushing the cells ref to the bot
 	bot = new Bot(field->getCellsRef());
 
 	sf::FloatRect fieldRect = field->getRectangle();
 	sf::Mouse::setPosition(sf::Vector2i(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2), window);
 
+	// the player starts the game
 	currentPlayer = PLAYER_1;
 
 	gameOver = false;
@@ -72,7 +78,8 @@ void Game::processEvents()
 
 	switch (event.type) {
 
-	case sf::Event::Closed: // closing the window (red X in the up right)
+	// closing the window (red X in the up right)
+	case sf::Event::Closed: 
 		window.close();
 		break;
 
@@ -103,28 +110,35 @@ void Game::processEvents()
 
 void Game::update()
 {
+	// timer ending = game over
 	if (timer->getTime() <= 0) gameOver = true;
 
+	// processing the timer
 	if (timer->getElapsedTime() >= sf::seconds(1)) {
 		timer->substractSecond();
 		timer->restart();
 	}
 
-	
+	// checking the bot to make a move
 	if (currentPlayer == bot->getPlayer()) {
 		gameOver = field->setChip(currentPlayer, bot->makeMove());
 		changePlayer();
 		timer->refresh();
 	}
 
+	// if game over, reload the game
 	if (gameOver) {
+		// board text processing
 		std::string winner;
 		winner = currentPlayer == Player::PLAYER_1 ? "The white chips won!" :
 			"The black chips won!";
 		winner += "\nPress any key to continue";
 		board->setText(winner);
 
+		// calling the render to make the text appear
 		render();
+
+		// waiting for the key to be pressed
 		sf::Event event;
 		while (true) {
 			if (window.pollEvent(event)) {
@@ -136,6 +150,7 @@ void Game::update()
 			}
 		}
 
+		// reseting
 		resetGame();
 		menu->open(background);
 	}

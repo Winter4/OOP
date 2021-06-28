@@ -4,9 +4,10 @@
 // basic textured object
 class Object  {
 protected:
-	sf::RenderWindow* window; // main window link
-	//sf::Texture texture; // texture for the rectangle
-	sf::Sprite sprite; // main object - sprite, contanes all the settings
+	// main window link
+	sf::RenderWindow* window; 
+	// main object - sprite, contanes all the settings
+	sf::Sprite sprite; 
 
 	Object();
 
@@ -15,6 +16,7 @@ public:
 	Object(sf::RenderWindow* window, sf::Vector2f position);
 	~Object();
 
+	// draw the object
 	virtual void draw();
 };
 

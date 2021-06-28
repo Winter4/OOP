@@ -1,5 +1,32 @@
 #include "Field.h"
 
+Field::Field(sf::RenderWindow* window, sf::Vector2f position, std::string textureFileName) 
+	: TextureOwner(window, position, textureFileName),
+chipPhantom(window, sf::Vector2f(0, 0), "greenCross.png")
+{
+	// loading chips texture
+	if (!chipsTexture.loadFromFile("chips.png")) throw std::exception("Texture init error.");
+
+	// cells memory allocating
+	cells = new Cell * *[CELLS_NUMBER];
+	for (int i = 0; i < CELLS_NUMBER; i++)
+		cells[i] = new Cell * [CELLS_NUMBER];
+
+	sf::Vector2f fieldPosition = sprite.getPosition();
+	// for each cell
+	for (size_t i = 0; i < CELLS_NUMBER; i++)
+		for (size_t j = 0; j < CELLS_NUMBER; j++) {
+			// setting sprite position to draw it correctly
+			// fP.x + 54: 54 is a grid's margin
+			// index.x * 54: 54 is a grid cell's width (or height: square it is)
+			float x = fieldPosition.x + 54 + j * 54;
+			float y = fieldPosition.y + 54 + i * 54;
+
+			// setting every cell's pos, index and fillnes (empty)
+			cells[i][j] = new Cell(window, sf::Vector2f(x, y), &chipsTexture, sf::Vector2i(i, j));
+		}
+}
+
 Field::~Field()
 {
 	for (int i = 0; i < CELLS_NUMBER; i++) {
@@ -15,18 +42,20 @@ bool Field::checkLine(Player currentPlayer, sf::Vector2i currentCell, sf::Vector
 	// counts the number of straight-going chips
 	short straightCount = 0;
 
+	// checking from the one side to another
 	for (short i = 0, count = 0, direction = -1; straightCount != 5 and count < 9; i += direction, count++) {
 
-		//if (currentCell.x + i * line.x < 0 or currentCell.x + i * line.x > 14) continue;
-		//if (currentCell.y + i  * line.y < 0 or currentCell.y + i * line.y > 14) continue;
+		// in-board check on the left
 		if (currentCell.x + i * line.x < 0 or currentCell.y + i * line.y < 0) {
 			direction = 1;
 			i = 0;
 			continue;
 		}
+		// in-board check on the right
 		if (currentCell.x + i * line.x > 14 or currentCell.y + i * line.y > 14)
 			break;
 
+		// the number of straight-going same chips
 		if (cells[currentCell.y + i * line.y][currentCell.x + i * line.x]->getPlayer() == currentPlayer)
 			straightCount++;
 		else {
